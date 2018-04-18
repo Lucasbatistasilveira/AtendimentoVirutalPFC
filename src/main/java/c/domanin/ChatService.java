@@ -13,6 +13,8 @@ public class ChatService implements IChatService {
 		if(User.getContext() == null) {
 			User.setContext("init");
 		}
+		
+		
 		return _nlpAgent.enviaWit(msg);
 	}
 

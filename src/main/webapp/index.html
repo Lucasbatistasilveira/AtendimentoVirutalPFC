@@ -42,13 +42,13 @@
                 document.getElementById("texto").value = "";
                 var element = document.getElementById("chatlogs");
                 //inserindo o loading
-                $("<div class='chat bot' id='loading'><div class='user-photo'><img src='img/bot.png'></div><div class='user-photo'><img src='img/loading.gif'></div></div>").appendTo('.chatlogs');
+                //$("<div class='chat bot' id='loading'><div class='user-photo'><img src='img/bot.png'></div><div class='user-photo'><img src='img/loading.gif'></div></div>").appendTo('.chatlogs');
                 
                 element.scrollTop = element.scrollHeight;
                 setTimeout(function(){
                     var msgServer = "";
                     $.ajax({
-                        url: '/rest/send',
+                        url: 'rest/send',
                         dataType: 'json',
                         type: 'post',
                         contentType: 'application/json',
