@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>UFMG Atendimento</title>
+    <link rel= "stylesheet" type= "text/css" href= "style.css">
+    
+</head>
+
+<body>
+    <div class="chatbox">
+        <div id = "chatlogs" class="chatlogs">
+
+
+        <div class="chat bot">
+            <div class="user-photo"><img src="img/user.png"></div>
+            <p class="chat-message arrow_box_bot">Seja bem vindo ao Atendimento Virtual UFMG. Aqui você pode tirar dúvidas relacionadas ao cadastro no minhaUFMG, ao correio eletrônico e à conexão com a Internet. Com o que posso ajudar?</p>
+        </div>
+        </div>
+        <div class="chat-form">
+            <input id="texto"  placeholder="Escreva alguma coisa..." onKeyUp="verificaEnter(this, event)" name="texto"></input>
+            <button id="submit">Enviar</button>
+        </div>
+    </div>
+
+<!-- Script que controla as mensagens do chat -->
+    <script type="text/javascript">
+
+    var msg = {"msg":"msg de teste"}
+
+    function verificaEnter(t,e){
+        if (e.keyCode === 13){
+            e.preventDefault();
+            document.getElementById("submit").click();
+        }
+    }
+        $("#submit").click(function() {
+            var texto = document.getElementById("texto").value;
+            if (texto != ""){
+
+                $("<div class='chat user'><div class='user-photo'><img src='img/bot.png'></div><p class='chat-message arrow_box'>" + texto + "</p></div>").appendTo('.chatlogs');
+                document.getElementById("texto").value = "";
+                var element = document.getElementById("chatlogs");
+                //inserindo o loading
+                $("<div class='chat bot' id='loading'><div class='user-photo'><img src='img/bot.png'></div><div class='user-photo'><img src='img/loading.gif'></div></div>").appendTo('.chatlogs');
+                
+                element.scrollTop = element.scrollHeight;
+                setTimeout(function(){
+                    var msgServer = "";
+                    $.ajax({
+                        url: '/receiver',
+                        dataType: 'json',
+                        type: 'post',
+                        contentType: 'application/json',
+                        data: JSON.stringify( {"direction": "user", "msg" : texto}),
+                        success: function(response){
+                            $("#loading").remove();
+                            msgServer = response['msg']
+                            $("<div class='chat bot'><div class='user-photo'><img src='img/bot.png'></div><p class='chat-message arrow_box_bot'>" + msgServer + "</p></div>").appendTo('.chatlogs');
+                            var element = document.getElementById("chatlogs");
+                            element.scrollTop = element.scrollHeight;
+                        }
+                    }); 
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
