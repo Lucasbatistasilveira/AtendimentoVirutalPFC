@@ -48,14 +48,14 @@
                 setTimeout(function(){
                     var msgServer = "";
                     $.ajax({
-                        url: '/receiver',
+                        url: '/rest/send',
                         dataType: 'json',
                         type: 'post',
                         contentType: 'application/json',
-                        data: JSON.stringify( {"direction": "user", "msg" : texto}),
+                        data: JSON.stringify( {"message" : texto}),
                         success: function(response){
                             $("#loading").remove();
-                            msgServer = response['msg']
+                            msgServer = response['message']
                             $("<div class='chat bot'><div class='user-photo'><img src='img/bot.png'></div><p class='chat-message arrow_box_bot'>" + msgServer + "</p></div>").appendTo('.chatlogs');
                             var element = document.getElementById("chatlogs");
                             element.scrollTop = element.scrollHeight;

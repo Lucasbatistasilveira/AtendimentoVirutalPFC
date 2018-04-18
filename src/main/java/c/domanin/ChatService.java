@@ -10,7 +10,7 @@ public class ChatService implements IChatService {
 	public RetornoNLP sendMessage(String msg) {
 		// TODO Auto-generated method stub
 		
-		return _nlpAgent.sendMessage(msg);
+		return _nlpAgent.enviaWit(msg);
 	}
 
 }

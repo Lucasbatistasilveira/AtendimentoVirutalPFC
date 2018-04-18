@@ -5,10 +5,10 @@ public class RetornoNLP {
 	private String Action;
 	private String Intent;
 	
-	public String getMensagem() {
+	public String getMessage() {
 		return Mensagem;
 	}
-	public void setMensagem(String mensagem) {
+	public void setMessage(String mensagem) {
 		Mensagem = mensagem;
 	}
 	public String getAction() {
