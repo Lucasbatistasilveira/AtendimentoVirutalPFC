@@ -4,7 +4,14 @@ public class RetornoNLP {
 	private String Mensagem;
 	private String Action;
 	private String Intent;
+	private double Confidence;
 	
+	public double getConfidence() {
+		return Confidence;
+	}
+	public void setConfidence(double Confidence) {
+		this.Confidence = Confidence;
+	}
 	public String getMessage() {
 		return Mensagem;
 	}

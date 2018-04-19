@@ -34,7 +34,7 @@ public class NLPAgent implements INLPAgent {
 	  }
 
 	@Override
-	public RetornoNLP enviaWit(String Message) {
+	public JSONObject enviaWit(String Message) {
 		// TODO Auto-generated method stub
 		try {
 			
@@ -45,24 +45,14 @@ public class NLPAgent implements INLPAgent {
 			
 			conn.setRequestProperty("Authorization", "Bearer L4BRASJEB2TBVB4EKROGZI7GYHEEBDWV");
 		    conn.setDoOutput(true);
-		    
 		    conn.setRequestMethod("POST");
 		 
 		    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),Charset.forName("UTF-8"))); 
 		    String text = readAll(rd);
 		    
 		    JSONObject json = new JSONObject(text);
-		    JSONObject son = json.getJSONObject("entities");
-		    System.out.println("Filho é "+ son);
-		    JSONObject intent = (JSONObject) son.getJSONArray("intent").get(0);
-		    System.out.println("Intenção é "+ intent.getString("value"));
-		    
-		    RetornoNLP result = new RetornoNLP();
-		    result.setAction("Sucesso");
-		    result.setIntent(intent.getString("value"));
-		    result.setMessage("Operação realizada com sucesso");
-		    
-		    return result;
+		 
+		    return json;
 		    
 		    
 		    
