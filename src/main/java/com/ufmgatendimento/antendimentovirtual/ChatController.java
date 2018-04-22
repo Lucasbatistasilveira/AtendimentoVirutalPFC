@@ -12,6 +12,7 @@ import a.host.Request;
 import a.host.Response;
 import b.application.ChatAppService;
 
+
 @Path("send")
 public class ChatController {	
 	private ChatAppService _chatAppService = new ChatAppService();
