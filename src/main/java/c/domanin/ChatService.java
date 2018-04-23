@@ -5,14 +5,24 @@ import org.json.JSONObject;
 
 import Shared.RetornoNLP;
 import Shared.User;
-import d.infrastructure.NLPAgent;
+import d.infrastructure.*;
+
 
 public class ChatService implements IChatService {
 	
 	private NLPAgent _nlpAgent =  new NLPAgent();
+	private SQLRepository _sqlRepository = new SQLRepository();
 	@Override
 	public RetornoNLP sendMessage(String msg) {
 
+//		User.setContext("internet");
+//		User.setGuid("23k1k3j123 31o23123 1454354j54 4234j");
+//		User.setState("inconsistencia");
+//		User.setMessage("Dudu dudu dudu dudu dudu dudu duud");
+//		User.setRegistration("2013024570");
+//		
+//		_sqlRepository.insertUserContext();
+		
 		if(User.getContext() == null) {
 			System.out.println("Contexto nulo. Setando novo contexto.");
 			User.setContext("init");
