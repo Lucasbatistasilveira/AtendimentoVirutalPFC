@@ -1,11 +1,18 @@
 package Shared;
 
 public class RetornoNLP {
-	private String Mensagem;
+	private String Message;
 	private String Action;
 	private String Intent;
 	private double Confidence;
+	private String Id;
 	
+	public String getId() {
+		return Id;
+	}
+	public void setId(String id) {
+		Id = id;
+	}
 	public double getConfidence() {
 		return Confidence;
 	}
@@ -13,10 +20,10 @@ public class RetornoNLP {
 		this.Confidence = Confidence;
 	}
 	public String getMessage() {
-		return Mensagem;
+		return Message;
 	}
 	public void setMessage(String mensagem) {
-		Mensagem = mensagem;
+		Message = mensagem;
 	}
 	public String getAction() {
 		return Action;

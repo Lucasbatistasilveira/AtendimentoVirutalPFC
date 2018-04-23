@@ -3,5 +3,5 @@ package b.application;
 import Shared.RetornoNLP;
 
 public interface IChatAppService {
-	RetornoNLP sendMessage(String msg);
+	RetornoNLP sendMessage(String msg,String id);
 }

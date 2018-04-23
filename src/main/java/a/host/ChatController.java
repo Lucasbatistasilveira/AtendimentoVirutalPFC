@@ -17,7 +17,7 @@ public class ChatController {
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response SendMessage(Request userMessage) {
-	    RetornoNLP NplFallBack = _chatAppService.sendMessage(userMessage.getMessage());
+	    RetornoNLP NplFallBack = _chatAppService.sendMessage(userMessage.getMessage(),userMessage.getId());
 	    Response response = new Response();
 	    response.setMessage(NplFallBack.getMessage());
 	    return response;
