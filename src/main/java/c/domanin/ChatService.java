@@ -17,7 +17,7 @@ public class ChatService implements IChatService {
 	private SQLRepository _sqlAgent = new SQLRepository();
 	@Override
 	public RetornoNLP sendMessage(String msg,String id) {
-		
+
 		RetornoNLP result = new RetornoNLP();
 		
 		if(id.isEmpty() && msg.isEmpty()) {
@@ -100,7 +100,7 @@ public class ChatService implements IChatService {
 				result.setMessage("Desculpe, não entendi o que você falou. Você pode repetir?");
 				User.setContext("init");
 		}
-		
+		result.setId(User.getGuid());
 		return result;
 		
 	}
@@ -136,7 +136,7 @@ public class ChatService implements IChatService {
 			}
 			break;
 		}
-		
+		result.setId(User.getGuid());
 		return result;
 	}
 	
