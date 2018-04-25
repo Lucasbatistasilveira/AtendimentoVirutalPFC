@@ -18,7 +18,7 @@ public class ChatService implements IChatService {
 
 		if(id.isEmpty() && msg.isEmpty()) {
 			// TODO : Gera id, retorna a msg de boas vindas, seta contexto inicial e salva no banco.
-			System.out.println("Novo Usuario.");
+			System.out.println("Novo Usuario.");			
 		}else {
 			// TODO : Lê infos do BD e atualiza User.
 			System.out.println(msg + " " + id);

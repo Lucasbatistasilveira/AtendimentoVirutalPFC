@@ -72,6 +72,21 @@ body {
     width: 100%;
 }
 
+.chat .loading-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.chat .loading-photo img{
+    width: 100%;
+}
+.load{
+    width: 60px;
+    height: 50px;
+}
+
 .chat .chat-message {
     width: 80%;
     padding: 15px;

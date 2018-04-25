@@ -7,16 +7,16 @@
     
 </head>
 
-<body>
+<body onload="userRegister()">
     <div class="chatbox">
         <div id = "chatlogs" class="chatlogs">
-
-
+		
+        
         <div class="chat bot">
             <div class="user-photo"><img src="img/user.png"></div>
-            <p class="chat-message arrow_box_bot">Seja bem vindo ao Atendimento Virtual UFMG. Aqui você pode tirar dúvidas relacionadas ao cadastro no minhaUFMG, ao correio eletrônico e à conexão com a Internet. Com o que posso ajudar?</p>
+            <p class="chat-message arrow_box_bot">Seja bem vindo ao Atendimento Virtual UFMG. Aqui vocï¿½ pode tirar dï¿½vidas relacionadas ao cadastro no minhaUFMG, ao correio eletrï¿½nico e ï¿½ conexï¿½o com a Internet. Com o que posso ajudar?</p>
         </div>
-        </div>
+     </div>    
         <div class="chat-form">
             <input id="texto"  placeholder="Escreva alguma coisa..." onKeyUp="verificaEnter(this, event)" name="texto"></input>
             <button id="submit">Enviar</button>
@@ -25,7 +25,23 @@
 
 <!-- Script que controla as mensagens do chat -->
     <script type="text/javascript">
-
+    function userRegister() {
+        $.ajax({
+            url: 'rest/send',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify( {"message" : "", "id" : ""}),
+            success: function(response){
+                msgServer = response['message'];
+                localStorage.setItem("userid", response['id']);
+                $("<div class='chat bot'><div class='user-photo'><img src='img/bot.png'></div><p class='chat-message arrow_box_bot'>" + msgServer + "</p></div>").appendTo('.chatlogs');
+                var element = document.getElementById("chatlogs");
+                element.scrollTop = element.scrollHeight;
+            }
+        }); 
+        
+    }
     var msg = {"msg":"msg de teste"}
 
     function verificaEnter(t,e){
@@ -42,8 +58,8 @@
                 document.getElementById("texto").value = "";
                 var element = document.getElementById("chatlogs");
                 //inserindo o loading
-                //$("<div class='chat bot' id='loading'><div class='user-photo'><img src='img/bot.png'></div><div class='user-photo'><img src='img/loading.gif'></div></div>").appendTo('.chatlogs');
-                
+                $("<div class='chat bot' id='loading'> <div class='user-photo'><img src='img/bot.png'></div> <div class='loading-photo'><img src='img/loading.gif'></div></div>").appendTo('.chatlogs');
+                var idd = localStorage.getItem("userid");
                 element.scrollTop = element.scrollHeight;
                 setTimeout(function(){
                     var msgServer = "";
@@ -52,7 +68,7 @@
                         dataType: 'json',
                         type: 'post',
                         contentType: 'application/json',
-                        data: JSON.stringify( {"message" : texto}),
+                        data: JSON.stringify( {"message" : texto, "id" : localStorage.getItem("userid")}),
                         success: function(response){
                             $("#loading").remove();
                             msgServer = response['message']
