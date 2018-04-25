@@ -20,6 +20,7 @@ public class ChatController {
 	    RetornoNLP NplFallBack = _chatAppService.sendMessage(userMessage.getMessage(),userMessage.getId());
 	    Response response = new Response();
 	    response.setMessage(NplFallBack.getMessage());
+	    response.setId(NplFallBack.getId());
 	    return response;
 	}
 }

@@ -33,11 +33,9 @@ public class UserDB {
 		User.state = state;
 	}
 
-
 	public String getContext() {
 		return context;
 	}
-
 
 	public void setContext(String context) {
 		User.context = context;

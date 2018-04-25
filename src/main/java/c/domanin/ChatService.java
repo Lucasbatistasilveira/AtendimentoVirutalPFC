@@ -2,26 +2,33 @@ package c.domanin;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Shared.RetornoNLP;
 import Shared.User;
-import d.infrastructure.NLPAgent;
+import d.infrastructure.*;
 
 public class ChatService implements IChatService {
 	
 	private NLPAgent _nlpAgent =  new NLPAgent();
+	private SQLRepository _sqlAgent = new SQLRepository();
 	@Override
 	public RetornoNLP sendMessage(String msg,String id) {
-
+		
+		RetornoNLP result = new RetornoNLP();
+		
 		if(id.isEmpty() && msg.isEmpty()) {
-			// TODO : Gera id, retorna a msg de boas vindas, seta contexto inicial e salva no banco.
-			System.out.println("Novo Usuario.");			
+			System.out.println("Novo Usuario.");
+			return CreateIfNotExist();
+			
 		}else {
 			// TODO : Lê infos do BD e atualiza User.
-			System.out.println(msg + " " + id);
+			User.setContext("");
+			_sqlAgent.getUserContext(id);
+			System.out.println("output: " + msg + " " + id + " " + User.getContext());
 		}
 		
 		if(User.getContext() == null) {
@@ -29,7 +36,7 @@ public class ChatService implements IChatService {
 			User.setContext("init");
 		}
 		
-		RetornoNLP result = new RetornoNLP();
+		
 		
 		switch(User.getContext()) {
 		case "init":
@@ -46,13 +53,36 @@ public class ChatService implements IChatService {
 			User.setContext("init");
 		}
 		
-
+		_sqlAgent.insertUserContext();
+		
+		return result;
+	}
+	
+	private RetornoNLP CreateIfNotExist() {
+		UUID guid = UUID.randomUUID();
+		while(_sqlAgent.ifExistUser(guid.toString())){
+			guid = UUID.randomUUID();
+		}
+		
+		User.setGuid(guid.toString());
+		User.setContext("init");
+		User.setMessage("");
+		User.setRegistration("");
+		User.setState("");
+		
+		_sqlAgent.insertUserContext();
+		
+		RetornoNLP result = new RetornoNLP();
+		result.setId(guid.toString());
+		result.setMessage("Olá, em que posso ajudar?");
+			
 		return result;
 	}
 	
 	private RetornoNLP State_Init(String message) {
 		
 		JSONObject jsonWit = _nlpAgent.enviaWit(message);
+		User.setMessage(message);
 		RetornoNLP result = JSONtoRetornoNLP(jsonWit);
 		
 		switch(result.getIntent()) {
@@ -92,10 +122,12 @@ public class ChatService implements IChatService {
 		case "wait_registration":
 			System.out.println("Esperando matrícula.");
 			String Reg = Get_Registration(msg);
+			User.setMessage(msg);
 			if(Reg == null) {
 				result.setMessage("Matrícula no formato não conhecido. Por favor digite-a novamente.");
 			}else {
-				if(Check_RegistrationOnDb(Reg)) {
+				User.setRegistration(Reg);
+				if(GetRegisterIfExist(Reg)) {
 					
 				}else {
 					result.setMessage("Não foi identificado nenhum cadastro no minhaUFMG associado ao número de matrícula " + Reg + ". Para realizar o cadastro basta acessar o <a href=\"https://sistemas.ufmg.br/nip\" target=\"_blank\">link</a> e informar o seu CPF e senha provisória cadastrada para ter acesso à sua folha de NIPs'");
@@ -124,7 +156,7 @@ public class ChatService implements IChatService {
 		else return null;
 	}
 	
-	private boolean Check_RegistrationOnDb(String registration) { 
+	private boolean GetRegisterIfExist(String registration) { 
 			
 		return false;
 	}

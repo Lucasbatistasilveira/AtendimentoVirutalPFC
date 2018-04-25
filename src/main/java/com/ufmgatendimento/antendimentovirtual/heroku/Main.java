@@ -30,7 +30,7 @@ public class Main {
         // Read more here: http://wiki.eclipse.org/Jetty/Reference/Jetty_Classloading
         root.setParentLoaderPriority(true);
         
-        new User("init");
+        new User("", "", "", "", "");
         System.out.println("Contexto é" + User.getContext());
         
         final String webappDirLocation = "src/main/webapp/";
