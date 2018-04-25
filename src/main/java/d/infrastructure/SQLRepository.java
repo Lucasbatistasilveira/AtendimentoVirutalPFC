@@ -19,10 +19,13 @@ public class SQLRepository {
 	static PreparedStatement crunchifyPrepareStat = null;
 	
 	private final static String SQL_GET_CONTEXT = "SELECT *" + 
-												  "FROM chatlog" + 
-												  "WHERE guid = ?" + 
-												  "ORDER BY count DESC" + 
-												  "LIMIT 1;";
+												  "FROM chatlog " + 
+												  "WHERE guid = ? " +
+												  "ORDER BY count DESC " + 
+												  "LIMIT 1";
+	private final static String SQL_CHECK_EXISTENT = "SELECT * " + 
+													 "FROM chatlog " + 
+													 "WHERE guid = ?";
 	
 	private final static String SQL_INSERT_CONTEXT = "INSERT INTO chatlog (guid, context, message, state, registration)"
 												   + " VALUES (?, ?, ?, ?,? )";
@@ -31,18 +34,20 @@ public class SQLRepository {
 		makeJDBCConnection();
 		try 
 		{
+			
 			crunchifyPrepareStat = conn.prepareStatement(SQL_GET_CONTEXT);
 			crunchifyPrepareStat.setString(1, userGuid);
 			ResultSet rs = crunchifyPrepareStat.executeQuery();
 			// Let's iterate through the java ResultSet
 			while (rs.next()) {
-
 				User.setGuid(rs.getString("guid"));
 				User.setContext(rs.getString("context"));
 				User.setMessage(rs.getString("message"));
 				User.setState(rs.getString("state"));
 				User.setRegistration(rs.getString("registration"));
 			}
+			
+		
  
 		} 
 		catch (
@@ -85,6 +90,19 @@ public class SQLRepository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
+		}
+	}
+	
+	public boolean ifExistUser(String guid) {
+		makeJDBCConnection();
+		try {
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_EXISTENT);
+			crunchifyPrepareStat.setString(1, guid);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 }

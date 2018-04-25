@@ -33,14 +33,6 @@ public class UserDB {
 		User.state = state;
 	}
 
-	public String getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(String timestamp) {
-		User.timestamp = timestamp;
-	}
-
 	public String getContext() {
 		return context;
 	}
