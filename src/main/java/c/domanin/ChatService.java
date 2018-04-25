@@ -128,7 +128,7 @@ public class ChatService implements IChatService {
 			}else {
 				User.setRegistration(Reg);
 				if(GetRegisterIfExist(Reg)) {
-					
+					result.setMessage("Matrícula identificada...");
 				}else {
 					result.setMessage("Não foi identificado nenhum cadastro no minhaUFMG associado ao número de matrícula " + Reg + ". Para realizar o cadastro basta acessar o <a href=\"https://sistemas.ufmg.br/nip\" target=\"_blank\">link</a> e informar o seu CPF e senha provisória cadastrada para ter acesso à sua folha de NIPs'");
 					User.setContext("init");
@@ -157,8 +157,9 @@ public class ChatService implements IChatService {
 	}
 	
 	private boolean GetRegisterIfExist(String registration) { 
+		
 			
-		return false;
+		return _sqlAgent.ifExistRegister(registration);
 	}
 	
 	private RetornoNLP State_Internet(String message,JSONObject jsonWit) {

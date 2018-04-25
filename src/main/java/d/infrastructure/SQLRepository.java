@@ -23,9 +23,12 @@ public class SQLRepository {
 												  "WHERE guid = ? " +
 												  "ORDER BY count DESC " + 
 												  "LIMIT 1";
-	private final static String SQL_CHECK_EXISTENT = "SELECT * " + 
+	private final static String SQL_CHECK_USER_EXISTENT = "SELECT * " + 
 													 "FROM chatlog " + 
 													 "WHERE guid = ?";
+	private final static String SQL_CHECK_REGISTER_EXISTENT = "SELECT * " + 
+			 											  	  "FROM info_general " + 
+			                                                  "WHERE registro = ?";
 	
 	private final static String SQL_INSERT_CONTEXT = "INSERT INTO chatlog (guid, context, message, state, registration)"
 												   + " VALUES (?, ?, ?, ?,? )";
@@ -93,11 +96,26 @@ public class SQLRepository {
 		}
 	}
 	
+	
+	
 	public boolean ifExistUser(String guid) {
 		makeJDBCConnection();
 		try {
-			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_EXISTENT);
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_USER_EXISTENT);
 			crunchifyPrepareStat.setString(1, guid);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean ifExistRegister(String reg) {
+		makeJDBCConnection();
+		try {
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_REGISTER_EXISTENT);
+			crunchifyPrepareStat.setString(1, reg);
 			ResultSet rs = crunchifyPrepareStat.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
