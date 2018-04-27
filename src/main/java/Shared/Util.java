@@ -14,5 +14,11 @@ public class Util {
 			public static final String URL_DATABASE = "jdbc:mysql://localhost:3306/atendimentovirtualufmg";
 			public static final String JDBC_FAILLED = "Failed to make connection!";			
 		}
+		
+		public static class EmailMessages
+		{
+			public static final String emailBody = "Olá, %s! Seja bem vindo ao atendimento virtual <br><br> Atenciosamente, <br>Atenimento Virtual UFMG";
+		}
     }
+	
 }

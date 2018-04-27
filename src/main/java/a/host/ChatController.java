@@ -1,5 +1,7 @@
 package a.host;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,7 +18,7 @@ public class ChatController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response SendMessage(Request userMessage) {
+	public Response SendMessage(Request userMessage) throws AddressException, MessagingException {
 	    RetornoNLP NplFallBack = _chatAppService.sendMessage(userMessage.getMessage(),userMessage.getId());
 	    Response response = new Response();
 	    response.setMessage(NplFallBack.getMessage());

@@ -2,6 +2,10 @@ package c.domanin;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import java.util.UUID;
 
 import org.json.JSONArray;
@@ -15,8 +19,9 @@ public class ChatService implements IChatService {
 	
 	private NLPAgent _nlpAgent =  new NLPAgent();
 	private SQLRepository _sqlAgent = new SQLRepository();
+	private EmailAgent _emailAgent = new EmailAgent();
 	@Override
-	public RetornoNLP sendMessage(String msg,String id) {
+	public RetornoNLP sendMessage(String msg,String id) throws AddressException, MessagingException {
 
 		RetornoNLP result = new RetornoNLP();
 		
