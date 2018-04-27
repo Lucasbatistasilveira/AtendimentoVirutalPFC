@@ -128,12 +128,9 @@ public class ChatService implements IChatService {
 					result.setMessage("Matrícula identificada...");
 					register = _sqlAgent.getLogin(reg);
 					if (register.size() > 1 ) {
-						String regmessage = "Identificado os logins ";
-						for(Register aux : register) {
-							regmessage = regmessage + aux.getLogin() + " ";
+						if(LoginsAreDifferent(register)) {
+							result.setMessage("Foram encontrados logins diferentes para o mesmo CPF.");
 						}
-						regmessage = regmessage + "para o mesmo CPF.";
-						result.setMessage(regmessage);
 						
 						//  TODO : Abrir chamado para unificação dos registros
 					}
@@ -145,6 +142,19 @@ public class ChatService implements IChatService {
 			break;
 		}
 		result.setId(User.getGuid());
+		return result;
+	}
+	
+	private boolean LoginsAreDifferent(List<Register> register) {
+		
+		boolean result = false;
+		
+		for(Register r : register) {
+			if(!r.getLogin().matches(register.get(0).getLogin())) {
+				result = true;
+			}
+		}
+		
 		return result;
 	}
 	
