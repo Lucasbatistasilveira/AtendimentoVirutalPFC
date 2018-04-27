@@ -4,14 +4,15 @@ package d.infrastructure;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Shared.User;
-import Shared.UserDB;
+import Shared.*;
 import Shared.Util.AppConstatns.JDBCConnection;
 public class SQLRepository {
 
@@ -23,12 +24,21 @@ public class SQLRepository {
 												  "WHERE guid = ? " +
 												  "ORDER BY count DESC " + 
 												  "LIMIT 1";
-	private final static String SQL_CHECK_EXISTENT = "SELECT * " + 
+	private final static String SQL_CHECK_USER_EXISTENT = "SELECT * " + 
 													 "FROM chatlog " + 
 													 "WHERE guid = ?";
+	private final static String SQL_CHECK_REGISTER_EXISTENT = "SELECT * " + 
+			 											  	  "FROM info_general " + 
+			                                                  "WHERE registro = ?";
 	
 	private final static String SQL_INSERT_CONTEXT = "INSERT INTO chatlog (guid, context, message, state, registration)"
 												   + " VALUES (?, ?, ?, ?,? )";
+	
+	private final static String SQL_CHECK_REGISTER_UNITY = "SELECT * " + 
+														   "FROM info_general " + 
+														   "WHERE cpf = (SELECT cpf " + 
+														   "             FROM info_general " + 
+														   "             WHERE registro = ?)";	
 	
 	public void getUserContext(String userGuid) {
 		makeJDBCConnection();
@@ -93,16 +103,52 @@ public class SQLRepository {
 		}
 	}
 	
+	
+	
 	public boolean ifExistUser(String guid) {
 		makeJDBCConnection();
 		try {
-			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_EXISTENT);
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_USER_EXISTENT);
 			crunchifyPrepareStat.setString(1, guid);
 			ResultSet rs = crunchifyPrepareStat.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public boolean ifExistRegister(String reg) {
+		makeJDBCConnection();
+		try {
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_REGISTER_EXISTENT);
+			crunchifyPrepareStat.setString(1, reg);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public List<Register> getLogin(String reg) {
+		makeJDBCConnection();
+		try {
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_REGISTER_UNITY);
+			crunchifyPrepareStat.setString(1, reg);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			
+			List<Register> list = new ArrayList<Register>();
+			while(rs.next()) {
+				Register register = new Register();
+				register.setLogin(rs.getString("login"));
+				register.setRegister(rs.getString("registro"));
+				list.add(register);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
