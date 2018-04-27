@@ -2,13 +2,15 @@ package c.domanin;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Shared.RetornoNLP;
-import Shared.User;
+import Shared.*;
 import d.infrastructure.*;
 
 public class ChatService implements IChatService {
@@ -28,11 +30,10 @@ public class ChatService implements IChatService {
 			// TODO : Lê infos do BD e atualiza User.
 			User.setContext("");
 			_sqlAgent.getUserContext(id);
-			System.out.println("output: " + msg + " " + id + " " + User.getContext());
+			System.out.println("input: " + msg + " " + id + " " + User.getContext());
 		}
 		
 		if(User.getContext() == null) {
-			System.out.println("Contexto nulo. Setando novo contexto.");
 			User.setContext("init");
 		}
 		
@@ -107,10 +108,6 @@ public class ChatService implements IChatService {
 	
 	private RetornoNLP State_InconsistencyMoodle(String msg,JSONObject jsonWit) {
 		
-//		if(jsonWit.length() == 0) {
-//			jsonWit = _nlpAgent.enviaWit(msg);
-//		}
-//		
 		RetornoNLP result = new RetornoNLP();
 		
 		switch(User.getContext()) {
@@ -120,17 +117,28 @@ public class ChatService implements IChatService {
 			User.setContext("wait_registration");
 			break;
 		case "wait_registration":
-			System.out.println("Esperando matrícula.");
-			String Reg = Get_Registration(msg);
+			String reg = Get_Registration(msg);
 			User.setMessage(msg);
-			if(Reg == null) {
+			if(reg == null) {
 				result.setMessage("Matrícula no formato não conhecido. Por favor digite-a novamente.");
 			}else {
-				User.setRegistration(Reg);
-				if(GetRegisterIfExist(Reg)) {
+				User.setRegistration(reg);
+				List<Register> register = new ArrayList<Register>();
+				if(_sqlAgent.ifExistRegister(reg)) {
 					result.setMessage("Matrícula identificada...");
+					register = _sqlAgent.getLogin(reg);
+					if (register.size() > 1 ) {
+						String regmessage = "Identificado os logins ";
+						for(Register aux : register) {
+							regmessage = regmessage + aux.getLogin() + " ";
+						}
+						regmessage = regmessage + "para o mesmo CPF.";
+						result.setMessage(regmessage);
+						
+						//  TODO : Abrir chamado para unificação dos registros
+					}
 				}else {
-					result.setMessage("Não foi identificado nenhum cadastro no minhaUFMG associado ao número de matrícula " + Reg + ". Para realizar o cadastro basta acessar o <a href=\"https://sistemas.ufmg.br/nip\" target=\"_blank\">link</a> e informar o seu CPF e senha provisória cadastrada para ter acesso à sua folha de NIPs'");
+					result.setMessage("Não foi identificado nenhum cadastro no minhaUFMG associado ao número de matrícula " + reg + ". Para realizar o cadastro basta acessar o <a href=\"https://sistemas.ufmg.br/nip\" target=\"_blank\">link</a> e informar o seu CPF e senha provisória cadastrada para ter acesso à sua folha de NIPs'");
 					User.setContext("init");
 				}
 			}
@@ -159,7 +167,7 @@ public class ChatService implements IChatService {
 	private boolean GetRegisterIfExist(String registration) { 
 		
 			
-		return _sqlAgent.ifExistRegister(registration);
+		return false;
 	}
 	
 	private RetornoNLP State_Internet(String message,JSONObject jsonWit) {
