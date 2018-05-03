@@ -117,7 +117,7 @@ public class ChatService implements IChatService {
 		switch(User.getContext()) {
 		case  "init":
 			result = JSONtoRetornoNLP(jsonWit);
-			result.setMessage("Identifiquei que você possui inconsistências no moodle. Você poderia me informar o seu número de matrícula?");
+			result.setMessage("Identifiquei que você possui problemas relacionados a inconsistências no moodle. Você poderia me informar o seu número de matrícula?");
 			User.setContext("wait_registration");
 			break;
 		case "wait_registration":
