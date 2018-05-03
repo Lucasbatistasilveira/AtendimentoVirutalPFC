@@ -1,13 +1,7 @@
 package Shared;
 
 public class User {
-	public static String getRegistration() {
-		return registration;
-	}
 
-	public static void setRegistration(String registration) {
-		User.registration = registration;
-	}
 
 
 	public static String context;
@@ -15,21 +9,38 @@ public class User {
 	public static String message;
 	public static String state;
 	public static String registration;
+	public static String name;
 
-	public User(String cont, String guid, String message, String state, String registration) {
+	public User(String cont, String guid, String message, String state, String registration, String name) {
 		super();
-		// TODO Auto-generated constructor stub
 		User.context = cont;
 		User.guid = guid;
 		User.message = message;
 		User.state =  state;
 		User.registration = registration;
+		User.name = name;
+		
+	}
+	
+	public static String getName() {
+		return name;
+	}
+	
+	public static void setName(String name) {
+		User.name = name;
 	}
 
 	public static String getGuid() {
 		return guid;
 	}
 
+	public static String getRegistration() {
+		return registration;
+	}
+	
+	public static void setRegistration(String registration) {
+		User.registration = registration;
+	}
 	public static void setGuid(String guid) {
 		User.guid = guid;
 	}

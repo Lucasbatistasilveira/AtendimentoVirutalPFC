@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 
 import Shared.*;
 import Shared.Util.AppConstatns.JDBCConnection;
-public class SQLRepository {
+public class SQLRepository implements ISqlRepository {
 
 	static Connection conn = null;
 	static PreparedStatement crunchifyPrepareStat = null;
@@ -40,6 +41,11 @@ public class SQLRepository {
 														   "             FROM info_general " + 
 														   "             WHERE registro = ?)";	
 	
+	private final static String SQL_INSERT_INCONSISTENCY_LOGIN = "INSERT INTO unify_login(login_guid, login_name, register, user_name, cpf) "
+																+ "VALUES (?, ?, ?, ?, ?)";
+	private final static String SQL_CHECK_VALID_TOKEN = "TODO::QUERY verificar se já foi utilizado ou se expirou";
+	private final static String SQL_SE_TOKEN_AS_VIEWD = "UPDATE unify_login SET viewed = 1,opened_chamado = 1 WHERE login_guid = ?";
+	
 	public void getUserContext(String userGuid) {
 		makeJDBCConnection();
 		try 
@@ -55,6 +61,7 @@ public class SQLRepository {
 				User.setMessage(rs.getString("message"));
 				User.setState(rs.getString("state"));
 				User.setRegistration(rs.getString("registration"));
+				//TODO:: Inserir o campo name
 			}
 			
 		
@@ -77,6 +84,7 @@ public class SQLRepository {
 			crunchifyPrepareStat.setString(3, User.getMessage());
 			crunchifyPrepareStat.setString(4, User.getState());
 			crunchifyPrepareStat.setString(5, User.getRegistration());
+			//TODO:: Inserir o campo name
 	
 			crunchifyPrepareStat.executeUpdate();
 		} catch (
@@ -151,4 +159,67 @@ public class SQLRepository {
 			return null;
 		}
 	}
+
+	@Override
+	public List<LoginDB> GetLoginFromToken(String token) {
+		makeJDBCConnection();
+		try {
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_VALID_TOKEN);
+			crunchifyPrepareStat.setString(1, token);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			
+			List<LoginDB> loginList = new ArrayList<LoginDB>();
+			while(rs.next()) {
+				LoginDB login = new LoginDB();
+				login.setLoginName(rs.getString("login_name"));
+				login.setRegister(rs.getString("register"));
+				loginList.add(login);
+			}
+			return loginList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public void SetTokenAsViewed(String token) {
+		makeJDBCConnection();
+		try {
+			crunchifyPrepareStat = conn.prepareStatement(SQL_SE_TOKEN_AS_VIEWD);
+			crunchifyPrepareStat.setString(1, token);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void InsertInconsistencyLogin(UUID loginGuid, String login, String register, String name, String cpf) {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_INSERT_INCONSISTENCY_LOGIN);
+			crunchifyPrepareStat.setString(1, loginGuid.toString());
+			crunchifyPrepareStat.setString(2, login);
+			crunchifyPrepareStat.setString(3, register);
+			crunchifyPrepareStat.setString(4, name);
+			crunchifyPrepareStat.setString(5, cpf);
+			//TODO::Inserir o nome!!
+			//TODO::Inserir o CPF
+	
+			crunchifyPrepareStat.executeUpdate();
+		} catch (
+ 
+		SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+
+
+
+
+
 }

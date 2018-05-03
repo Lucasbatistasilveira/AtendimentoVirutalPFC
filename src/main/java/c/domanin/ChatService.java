@@ -13,7 +13,6 @@ import java.util.UUID;
 import org.json.JSONArray;	
 import org.json.JSONObject;
 
-import Shared.RetornoNLP;
 import Shared.*;
 import d.infrastructure.*;
 
@@ -42,8 +41,6 @@ public class ChatService implements IChatService {
 			User.setContext("init");
 		}
 		
-		
-		
 		switch(User.getContext()) {
 		case "init":
 			result = State_Init(msg);
@@ -54,6 +51,8 @@ public class ChatService implements IChatService {
 		case "wait_registration":
 			result = State_InconsistencyMoodle(msg, new JSONObject());
 			break;
+		case "Unify_Login":
+			result = State_UnifyLogin(msg, new JSONObject());
 		default:
 			result.setMessage("Desculpe, não entendi o que você falou. Você pode repetir?");
 			User.setContext("init");
@@ -80,7 +79,7 @@ public class ChatService implements IChatService {
 		
 		RetornoNLP result = new RetornoNLP();
 		result.setId(guid.toString());
-		result.setMessage("Olá, em que posso ajudar?");
+		result.setMessage(Util.AppConstatns.Messages.WELCOME);
 			
 		return result;
 	}
@@ -134,7 +133,10 @@ public class ChatService implements IChatService {
 					register = _sqlAgent.getLogin(reg);
 					if (register.size() > 1 ) {
 						if(LoginsAreDifferent(register)) {
-							result.setMessage("Foram encontrados logins diferentes para o mesmo CPF.");
+							result.setMessage("Foram encontrados logins diferentes para a mesma pessoa."
+									+ "Caso queira que eu resolva este problema, por favor, digite sim.");
+							User.setContext("Unify_Login");
+							User.setRegistration(reg);
 						}
 						
 						//  TODO : Abrir chamado para unificação dos registros
@@ -181,7 +183,6 @@ public class ChatService implements IChatService {
 	
 	private boolean GetRegisterIfExist(String registration) { 
 		
-			
 		return false;
 	}
 	
@@ -236,6 +237,50 @@ public class ChatService implements IChatService {
 		
 		return result;
 		
+	}
+	
+	private RetornoNLP State_UnifyLogin(String message,JSONObject jsonWit) throws AddressException, MessagingException {
+		
+		if(jsonWit.length() == 0) {
+			jsonWit = _nlpAgent.enviaWit(message);
+		}
+		JSONObject entities = jsonWit.getJSONObject("entities");
+		RetornoNLP result = JSONtoRetornoNLP(jsonWit);
+		User.setMessage(message);
+		
+		switch(result.getIntent()) {
+			case "afirmacao":
+				result.setMessage("É muito bom me sentir prestativo! E que bom que poderei te ajudar! Estou te enviando um email para que você possa escolher um dos logins ativos. Abraço!");
+				// TODO::Criar uma funcção que verifica se há chamado em aberto
+				SendEmailToUnifyLogin();
+//				TODO::mudar as frases de retorno da negacao tb
+				break;
+			case "negacao":
+				result.setMessage("Pelo que parece você não quer que sejam feitas alterações nos seus logins, logo não farei. Fique a vontade para tirar as suas dúvidas quando quiser. Abraço.");
+	
+				break;
+			default:
+				result.setMessage("Desculpe, não entendi o que você falou. Você pode repetir?");
+				User.setContext("Unify_Login");
+				return result;
+		}
+		result.setId(User.getGuid());
+		User.setContext("init");
+		return result;
+		}
+
+	private void SendEmailToUnifyLogin() throws AddressException, MessagingException {
+		List<Register> register = _sqlAgent.getLogin(User.getRegistration());
+		UUID loginGuid = UUID.randomUUID();
+		
+		for(Register r : register) {
+			//TODO::Inserir o nome!!
+			//TODO::Inserir o CPF
+			_sqlAgent.InsertInconsistencyLogin(loginGuid, r.getLogin(), r.getRegister(), "User_name", "User_cpf");
+			_emailAgent.generateAndSendEmail("Inconsistência na Matrícula", 
+											 String.format(Util.AppConstatns.EmailMessages.EMAIL_LOGIN_UNIFY_BUDY,"TODO::INSERIR O NOME",loginGuid),
+											 r.getLogin()+"@ufmg.br");
+		}
 	}
 
 }

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<style>
+body {
+    background-image: url("background.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.flex {
+	display: flex;
+	flex-direction: column;
+}
+.div-content {
+height: 180px;
+    align-items: center;
+    
+}
+.div-content-logins {
+	height: 180px;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.container{
+	width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center
+}
+
+.alert {
+    padding: 20px;
+    color: #f44336;
+}
+ .button-login {
+     width: 400px;
+     height: 60px;
+     border-radius: 40px 40px 40px 40px;
+     
+ }
+ .button-login-hover:hover {
+     box-shadow: 0 3px 5px 0 rgb(83, 239, 117),0 1px 25px 0 rgb(59, 239, 99);
+ }
+   .button-enviar {
+      box-shadow: 0 3px 5px 0 rgb(83, 239, 117),0 1px 25px 0 rgb(59, 239, 99);
+ }
+ 
+ .button-send {
+
+ 	 width: 200px;
+     height: 60px;
+ }
+ 
+ .green {
+ 	background-color: green;
+ }
+ 
+.box_login_title {
+	box-sizing: border-box;
+	display: inline-block;
+	color: black;
+	background-color: rgb(151, 157, 160);
+	font-family: verdana;
+	padding: 15px 10px 10px 10px;
+	border-radius: 20px 20px 0 0;
+	width: 100%;
+	font-size: 21px;
+}
+
+.box_logins {
+ width: 500px;
+ height: 540px;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+}
+</style>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>UFMG Atendimento Virtual</title>
+    <link rel= "stylesheet" type= "text/css" href= "style.css">
+</head>
+<body onload="VerifyTokenValid()">
+<div class="container">
+	<div class="box_logins">
+	<div class="div-content">
+		<span class="box_login_title">
+			Olá! Para a unificação dos seus dados é preciso que você selecione um dos dois logins abaixo para que seja o seu <strong>único login</strong> e depois clique em enviar.
+		</span>
+	</div>
+	<div class="flex div-content-logins">
+		<button id="firstLogin" class="button-login button-login-hover" value="firstLogin" onclick="firstLogin()" ></button>
+		<button id="secondLogin" class="button-login button-login-hover"  value="secondLogin" onclick="SecondLogin()">Second Login</button>
+	</div>
+	<div class="flex div-content">
+		<div class="alert" id = "messageAlert">
+		  
+		</div>
+       <button id="sendButton" class="button-send" onclick="Send()">Enviar</button>
+	</div>
+	</div>
+
+</div>
+
+<script>
+
+function VerifyTokenValid() {
+	var frontendUrl = window.location.href;
+	urlParams = parseURLParams(frontendUrl);
+	var token = urlParams.token[0];
+    localStorage.setItem("tokenlogin", token);
+	if(token != '') {
+        $.ajax({
+            url: 'http://localhost:8082/antendimentovirtual/rest/unifylogin?token='+token,
+            dataType: 'json',
+            type: 'get',
+            contentType: 'application/json',
+            success: function(response){
+            	debugger;
+				if(response['status'] == "false") {
+					var firstLogin = document.getElementById("firstLogin");
+					var secondLogin = document.getElementById("secondLogin");
+					document.getElementById("messageAlert").innerHTML = "Desculpe, mas este link não é mais válido. Neste caso, ou ele está expirado ou já foi utilizado.";
+					firstLogin.innerHTML = "-";
+					secondLogin.innerHTML = "-";
+					firstLogin.disabled = true;
+					secondLogin.disabled = true;
+					document.getElementById('sendButton').disabled = true;
+				}
+				if(response['status']=="true") {
+					 debugger;
+					 document.getElementById("firstLogin").innerHTML = response['login1'];
+					 document.getElementById("secondLogin").innerHTML = response['login2'];
+					
+				}
+            }
+        }); 	
+	}
+}
+
+	function firstLogin() {
+		if(document.getElementById("firstLogin").classList.contains('green')) {
+			$("#firstLogin").removeClass("green");
+			$("#sendButton").removeClass("button-enviar");
+			
+		} else {
+			$("#firstLogin").addClass("green");
+			document.getElementById("messageAlert").innerHTML = "";
+			$("#sendButton").addClass("button-enviar");
+			if(document.getElementById("secondLogin").classList.contains('green')) {
+				$("#secondLogin").removeClass("green");			
+			}
+		}
+	}
+	
+	function SecondLogin() {
+		if(document.getElementById("secondLogin").classList.contains('green')) {
+			$("#secondLogin").removeClass("green");	
+			$("#sendButton").removeClass("button-enviar");
+		} else {
+			document.getElementById("messageAlert").innerHTML = "";
+			$("#secondLogin").addClass("green");
+			$("#sendButton").addClass("button-enviar");
+			if(document.getElementById("firstLogin").classList.contains('green')) {
+				$("#firstLogin").removeClass("green");
+			}
+		}
+	}
+    
+    function parseURLParams(url) {
+        var queryStart = url.indexOf("?") + 1,
+            queryEnd   = url.indexOf("#") + 1 || url.length + 1,
+            query = url.slice(queryStart, queryEnd - 1),
+            pairs = query.replace(/\+/g, " ").split("&"),
+            parms = {}, i, n, v, nv;
+
+        if (query === url || query === "") return;
+
+        for (i = 0; i < pairs.length; i++) {
+            nv = pairs[i].split("=", 2);
+            n = decodeURIComponent(nv[0]);
+            v = decodeURIComponent(nv[1]);
+
+            if (!parms.hasOwnProperty(n)) parms[n] = [];
+            parms[n].push(nv.length === 2 ? v : null);
+        }
+        return parms;
+    }
+    function Send() {
+		debugger;
+		var stateFirstLogin = document.getElementById("firstLogin").classList.contains('green');
+		var stateSecondLogin =  document.getElementById("secondLogin").classList.contains('green');
+		var userLogin = '';
+		if(!stateFirstLogin && !stateSecondLogin) {
+			document.getElementById("messageAlert").innerHTML = "Você deve escolher um dos dois logins para continuar!";
+			return;
+		}
+		if(stateFirstLogin && !stateSecondLogin) {
+			userLogin = document.getElementById("firstLogin").innerHTML;
+		} else {
+			userLogin = document.getElementById("secondLogin").innerHTML;
+		}
+		debugger;
+		var id = localStorage.getItem("tokenlogin");
+	    $.ajax({
+	        url: 'rest/unifylogin',
+	        dataType: 'json',
+	        type: 'post',
+	        contentType: 'application/json',
+	        data: JSON.stringify( {"login" : userLogin, "token" : localStorage.getItem("tokenlogin")}),
+	        success: function(response){
+	            //tratar resposta do servidor 
+	        }
+	    }); 
+	}
+</script>
+</body>
+</html>

@@ -15,7 +15,7 @@ public class EmailAgent implements IEmailAgent{
 	static Session getMailSession;
 	static MimeMessage generateMailMessage;
  
-	   public void generateAndSendEmail(String email, String nome, String assunto) throws AddressException, MessagingException {
+	   public void generateAndSendEmail(String subject, String body, String email) throws AddressException, MessagingException {
  
 		mailServerProperties = System.getProperties();
 		mailServerProperties.put("mail.smtp.port", "587");
@@ -25,9 +25,9 @@ public class EmailAgent implements IEmailAgent{
 		getMailSession = Session.getDefaultInstance(mailServerProperties, null);
 		generateMailMessage = new MimeMessage(getMailSession);
 		generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-		generateMailMessage.setSubject(assunto);
+		generateMailMessage.setSubject(subject);
 
-		generateMailMessage.setContent(String.format(Util.AppConstatns.EmailMessages.emailBody, nome), "text/html");
+		generateMailMessage.setContent(body, "text/html");
  
 		Transport transport = getMailSession.getTransport("smtp");
 
