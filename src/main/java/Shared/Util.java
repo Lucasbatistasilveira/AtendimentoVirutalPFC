@@ -9,6 +9,7 @@ public class Util {
 		{
 			public static final String WELCOME = "Seja bem vindo ao Atendimento Virtual UFMG. Aqui você pode tirar dúvidas relacionadas ao cadastro no minhaUFMG, ao correio eletrônico e à conexão com a Internet. Com o que posso ajudar?";
 		}
+		
 		public static class JDBCConnection
 		{
 			public static final String BD = "teeeste";
@@ -25,6 +26,47 @@ public class Util {
 												 + "Clique no link http://localhost:8082/antendimentovirtual/unify-login.html?token=%s  para escolher o login que deseja manter<br><br>"
 												 + "Atenciosamente, <br>Atenimento Virtual UFMG";
 		}
+		
+		public static class StateMessages 
+		{
+			public static class StateSetup
+			{
+				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir?";
+			}
+			
+			public static class StateInit 
+			{
+				public static final String GREATING = "Olá, %s! Em que posso ajudar?";
+				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir?";
+			}
+			
+			public static class StateInternet
+			{
+				public static final String UNKNOWN = "Desculpe, sistema operacional não conhecido, poderia repetir?";
+				public static final String ASK_ABOUT_SO = "Ok. Qual é o seu Sistema Operacional?";
+				public static class SO 
+				{
+					public static final String WINDOWS_10 = "Por favor, <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";
+				}
+			}
+			
+			public static class StateMoodleInconsistency 
+			{
+				public static final String ASK_ABOUT_REGISTER =  "Identifiquei que você possui problemas relacionados a inconsistências no moodle. Você poderia me informar o seu número de matrícula?";
+				public static final String WRONG_REGISTER_FORMAT = "Matrícula no formato não conhecido. Por favor digite-a novamente.";
+				public static final String DIFFERENT_LOGIN_FOUND = "Foram encontrados logins diferentes para a mesma pessoa. Caso queira que eu resolva este problema, por favor, digite sim.";
+				public static final String LOGIN_NOT_FOUND = "Não foi identificado nenhum cadastro no minhaUFMG associado ao número de matrícula %s. Para realizar o cadastro basta acessar o <a href=\"https://sistemas.ufmg.br/nip\" target=\"_blank\">link</a> e informar o seu CPF e senha provisória cadastrada para ter acesso à sua folha de NIPs'";
+			}
+			
+			public static class StateUnifyLogin
+			{
+				public static final String USER_AFFIRMATION = "É muito bom me sentir prestativo! E que bom que poderei te ajudar! Estou te enviando um email para que você possa escolher um dos logins ativos. Abraço!";
+				public static final String USER_DENIAL = "Pelo que parece você não quer que sejam feitas alterações nos seus logins, logo não farei. Fique a vontade para tirar as suas dúvidas quando quiser. Abraço.";
+				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir?";
+			}
+			
+		}
+		
     }
 	
 }

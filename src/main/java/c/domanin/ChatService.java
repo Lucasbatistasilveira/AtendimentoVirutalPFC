@@ -15,6 +15,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Shared.*;
+import Shared.Util.AppConstatns.StateMessages.StateInit;
+import Shared.Util.AppConstatns.StateMessages.StateInternet;
+import Shared.Util.AppConstatns.StateMessages.StateMoodleInconsistency;
+import Shared.Util.AppConstatns.StateMessages.StateSetup;
+import Shared.Util.AppConstatns.StateMessages.StateUnifyLogin;
 import d.infrastructure.*;
 
 public class ChatService implements IChatService {
@@ -55,7 +60,7 @@ public class ChatService implements IChatService {
 		case "Unify_Login":
 			result = State_UnifyLogin(msg, new JSONObject());
 		default:
-			result.setMessage("Desculpe, não entendi o que você falou. Você pode repetir?");
+			result.setMessage(StateSetup.UNKNOWN);
 			User.setContext("init");
 		}
 		
@@ -93,7 +98,7 @@ public class ChatService implements IChatService {
 		
 		switch(result.getIntent()) {
 			case "Saudação":
-				result.setMessage(String.format("Olá, %s! Em que posso ajudar?", GetGreeting()));
+				result.setMessage(String.format(StateInit.GREATING, GetGreeting()));
 				User.setContext("init");
 				break;
 			case "internet":
@@ -103,7 +108,7 @@ public class ChatService implements IChatService {
 				result = State_InconsistencyMoodle("",jsonWit);
 				break;
 			default:
-				result.setMessage("Desculpe, não entendi o que você falou. Você pode repetir?");
+				result.setMessage(StateInit.UNKNOWN);
 				User.setContext("init");
 		}
 		result.setId(User.getGuid());
@@ -118,14 +123,14 @@ public class ChatService implements IChatService {
 		switch(User.getContext()) {
 		case  "init":
 			result = JSONtoRetornoNLP(jsonWit);
-			result.setMessage("Identifiquei que você possui problemas relacionados a inconsistências no moodle. Você poderia me informar o seu número de matrícula?");
+			result.setMessage(StateMoodleInconsistency.ASK_ABOUT_REGISTER);
 			User.setContext("wait_registration");
 			break;
 		case "wait_registration":
 			String reg = Get_Registration(msg);
 			User.setMessage(msg);
 			if(reg == null) {
-				result.setMessage("Matrícula no formato não conhecido. Por favor digite-a novamente.");
+				result.setMessage(StateMoodleInconsistency.WRONG_REGISTER_FORMAT);
 			}else {
 				User.setRegistration(reg);
 				List<Register> register = new ArrayList<Register>();
@@ -134,8 +139,7 @@ public class ChatService implements IChatService {
 					register = _sqlAgent.getLogin(reg);
 					if (register.size() > 1 ) {
 						if(LoginsAreDifferent(register)) {
-							result.setMessage("Foram encontrados logins diferentes para a mesma pessoa."
-									+ "Caso queira que eu resolva este problema, por favor, digite sim.");
+							result.setMessage(StateMoodleInconsistency.DIFFERENT_LOGIN_FOUND);
 							User.setContext("Unify_Login");
 							User.setRegistration(reg);
 						}
@@ -143,7 +147,7 @@ public class ChatService implements IChatService {
 						//  TODO : Abrir chamado para unificação dos registros
 					}
 				}else {
-					result.setMessage("Não foi identificado nenhum cadastro no minhaUFMG associado ao número de matrícula " + reg + ". Para realizar o cadastro basta acessar o <a href=\"https://sistemas.ufmg.br/nip\" target=\"_blank\">link</a> e informar o seu CPF e senha provisória cadastrada para ter acesso à sua folha de NIPs'");
+					result.setMessage(String.format(StateMoodleInconsistency.LOGIN_NOT_FOUND, reg)); 
 					User.setContext("init");
 				}
 			}
@@ -199,18 +203,18 @@ public class ChatService implements IChatService {
 			String SO = entities.getJSONArray("internet").getJSONObject(0).getString("value");
 			switch(SO) {
 			case "windows 10":
-				result.setMessage("Por favor, <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.");
+				result.setMessage(StateInternet.SO.WINDOWS_10);
 				User.setContext("init");
 				break;
 			default:
-				result.setMessage("Seu SO não foi identificado.");
+				result.setMessage(StateInternet.UNKNOWN);
 				User.setContext("init");
 			}
 		}else if(entities.has("intent")){
-			result.setMessage("Ok. Qual é o seu Sistema Operacional?");
+			result.setMessage(StateInternet.ASK_ABOUT_SO);
 			User.setContext("internet");
 		}else {
-			result.setMessage("Desculpe, sistema operacional não conhecido, poderia repetir?");
+			result.setMessage(StateInternet.UNKNOWN);
 			User.setContext("internet");
 		}
 		return result;
@@ -251,17 +255,17 @@ public class ChatService implements IChatService {
 		
 		switch(result.getIntent()) {
 			case "afirmacao":
-				result.setMessage("É muito bom me sentir prestativo! E que bom que poderei te ajudar! Estou te enviando um email para que você possa escolher um dos logins ativos. Abraço!");
+				result.setMessage(StateUnifyLogin.USER_AFFIRMATION);
 				// TODO::Criar uma funcção que verifica se há chamado em aberto
 				SendEmailToUnifyLogin();
 //				TODO::mudar as frases de retorno da negacao tb
 				break;
 			case "negacao":
-				result.setMessage("Pelo que parece você não quer que sejam feitas alterações nos seus logins, logo não farei. Fique a vontade para tirar as suas dúvidas quando quiser. Abraço.");
+				result.setMessage(StateUnifyLogin.USER_DENIAL);
 	
 				break;
 			default:
-				result.setMessage("Desculpe, não entendi o que você falou. Você pode repetir?");
+				result.setMessage(StateUnifyLogin.UNKNOWN);
 				User.setContext("Unify_Login");
 				return result;
 		}
