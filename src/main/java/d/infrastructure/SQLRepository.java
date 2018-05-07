@@ -43,8 +43,14 @@ public class SQLRepository implements ISqlRepository {
 	
 	private final static String SQL_INSERT_INCONSISTENCY_LOGIN = "INSERT INTO unify_login(login_guid, login_name, register, user_name, cpf) "
 																+ "VALUES (?, ?, ?, ?, ?)";
-	private final static String SQL_CHECK_VALID_TOKEN = "TODO::QUERY verificar se já foi utilizado ou se expirou";
-	private final static String SQL_SE_TOKEN_AS_VIEWD = "UPDATE unify_login SET viewed = 1,opened_chamado = 1 WHERE login_guid = ?";
+	private final static String SQL_CHECK_VALID_TOKEN = "SELECT * "
+														+ "FROM unify_login "
+														+ "WHERE unify_login.timestamp > DATE_SUB(NOW(), INTERVAL 2 DAY) "
+														+ "AND unify_login.login_guid = ? "
+														+ "AND unify_login.viewed = '0' "
+														+ "AND unify_login.opened_chamado = '0' ";
+	
+	private final static String SQL_SE_TOKEN_AS_VIEWD = "UPDATE unify_login SET viewed = '1',opened_chamado = '1' WHERE login_guid = ?";
 	
 	public void getUserContext(String userGuid) {
 		makeJDBCConnection();

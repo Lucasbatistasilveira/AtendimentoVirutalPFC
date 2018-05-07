@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -92,7 +93,7 @@ public class ChatService implements IChatService {
 		
 		switch(result.getIntent()) {
 			case "Saudação":
-				result.setMessage("Olá, em que posso ajudar?");
+				result.setMessage(String.format("Olá, %s! Em que posso ajudar?", GetGreeting()));
 				User.setContext("init");
 				break;
 			case "internet":
@@ -109,7 +110,7 @@ public class ChatService implements IChatService {
 		return result;
 		
 	}
-	
+
 	private RetornoNLP State_InconsistencyMoodle(String msg,JSONObject jsonWit) {
 		
 		RetornoNLP result = new RetornoNLP();
@@ -281,6 +282,20 @@ public class ChatService implements IChatService {
 											 String.format(Util.AppConstatns.EmailMessages.EMAIL_LOGIN_UNIFY_BUDY,"TODO::INSERIR O NOME",loginGuid),
 											 r.getLogin()+"@ufmg.br");
 		}
+	}
+	
+	private String GetGreeting() {
+		Calendar c = Calendar.getInstance();
+		String greeting =  null;				
+		int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+		if(timeOfDay >= 0 && timeOfDay < 12){
+			greeting= "bom dia";
+		}else if(timeOfDay >= 12 && timeOfDay < 17){
+			greeting = "boa tarde";
+		}else if(timeOfDay >= 17 && timeOfDay < 24){
+			greeting = "boa noite";
+		}
+		return greeting;
 	}
 
 }
