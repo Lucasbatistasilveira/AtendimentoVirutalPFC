@@ -4,9 +4,15 @@ package d.infrastructure;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -51,6 +57,8 @@ public class SQLRepository implements ISqlRepository {
 														+ "AND unify_login.opened_chamado = '0' ";
 	
 	private final static String SQL_SE_TOKEN_AS_VIEWD = "UPDATE unify_login SET viewed = '1',opened_chamado = '1' WHERE login_guid = ?";
+	
+	private final static String SQL_CHECK_COURSES_ASSOCIATED = "SELECT Data FROM usercourses WHERE Registro = ?";
 	
 	public void getUserContext(String userGuid) {
 		makeJDBCConnection();
@@ -201,6 +209,45 @@ public class SQLRepository implements ISqlRepository {
 		
 	}
 
+	public boolean[] CheckCoursesAssociated(String reg) {
+		
+		boolean[] result = new boolean[2];
+		Arrays.fill(result, Boolean.FALSE);
+		result[1] = true;
+		
+		makeJDBCConnection();
+		try {
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_COURSES_ASSOCIATED);
+			crunchifyPrepareStat.setString(1, reg);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date current = new Date();
+			
+			while(rs.next()) {
+				result[0] = true;
+				Date date = format.parse(rs.getString("Data"));
+				long diffInMillies = Math.abs(current.getTime() - date.getTime());
+			    long diff = TimeUnit.HOURS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+			    
+			    if(diff < 48) {
+			    	result[1] = false;
+			    }
+			    
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		return result;
+		
+	}
+	
 	@Override
 	public void InsertInconsistencyLogin(UUID loginGuid, String login, String register, String name, String cpf) {
 		makeJDBCConnection();

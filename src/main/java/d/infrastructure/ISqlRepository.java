@@ -14,4 +14,5 @@ public interface ISqlRepository {
 	public List<LoginDB> GetLoginFromToken(String token);
 	public void SetTokenAsViewed(String token);
 	public void InsertInconsistencyLogin(UUID loginGuid, String login, String register, String name, String cpf);
+	public boolean[] CheckCoursesAssociated(String reg);
 }

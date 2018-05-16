@@ -59,6 +59,10 @@ public class ChatService implements IChatService {
 			break;
 		case "Unify_Login":
 			result = State_UnifyLogin(msg, new JSONObject());
+			break;
+		case "email_verification":
+			result = State_EmailVerification(msg);
+			break;
 		default:
 			result.setMessage(StateSetup.UNKNOWN);
 			User.setContext("init");
@@ -135,7 +139,6 @@ public class ChatService implements IChatService {
 				User.setRegistration(reg);
 				List<Register> register = new ArrayList<Register>();
 				if(_sqlAgent.ifExistRegister(reg)) {
-					result.setMessage("Matrícula identificada...");
 					register = _sqlAgent.getLogin(reg);
 					if (register.size() > 1 ) {
 						if(LoginsAreDifferent(register)) {
@@ -143,8 +146,15 @@ public class ChatService implements IChatService {
 							User.setContext("Unify_Login");
 							User.setRegistration(reg);
 						}
-						
-						//  TODO : Abrir chamado para unificação dos registros
+					}
+					boolean[] checkcourses = _sqlAgent.CheckCoursesAssociated(reg);
+					if(!checkcourses[0]) {
+						result.setMessage(StateMoodleInconsistency.COURSES_NOT_FOUND);
+					}else if(!checkcourses[1]) {
+						result.setMessage(StateMoodleInconsistency.COURSES_UNDER_TWO_DAYS);
+					}else {
+						result.setMessage(StateMoodleInconsistency.SUCCESS);
+						User.setContext("email_verification");
 					}
 				}else {
 					result.setMessage(String.format(StateMoodleInconsistency.LOGIN_NOT_FOUND, reg)); 
@@ -286,6 +296,29 @@ public class ChatService implements IChatService {
 											 String.format(Util.AppConstatns.EmailMessages.EMAIL_LOGIN_UNIFY_BUDY,"TODO::INSERIR O NOME",loginGuid),
 											 r.getLogin()+"@ufmg.br");
 		}
+	}
+	
+	private RetornoNLP State_EmailVerification(String msg) {
+		RetornoNLP result = new RetornoNLP();
+		
+		switch(User.getContext()) {
+		case "email_verification":
+			JSONObject jsonWit = _nlpAgent.enviaWit(msg);
+			User.setMessage(msg);
+			result = JSONtoRetornoNLP(jsonWit);
+			switch(result.getIntent()) {
+			case "afirmacao":
+				System.out.println("Verifica correio eletrônico.");
+				break;
+			default:
+				System.out.println("Intenção não identificada.");
+					
+			}
+			
+			
+			break;
+		}
+		return result;
 	}
 	
 	private String GetGreeting() {
