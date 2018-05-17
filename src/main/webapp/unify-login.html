@@ -116,7 +116,11 @@ function VerifyTokenValid() {
 	var token = urlParams.token[0];
     localStorage.setItem("tokenlogin", token);
 	if(token != '') {
+<<<<<<< HEAD
 		 $.ajax({
+=======
+        $.ajax({
+>>>>>>> 291460f5106691d3c826c8d2c39b5f0227f9ad01
             url: 'rest/unifylogin?token='+token,
             dataType: 'json',
             type: 'get',
