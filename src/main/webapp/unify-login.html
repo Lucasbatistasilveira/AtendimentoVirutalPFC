@@ -117,7 +117,7 @@ function VerifyTokenValid() {
     localStorage.setItem("tokenlogin", token);
 	if(token != '') {
         $.ajax({
-            url: 'http://localhost:8082/antendimentovirtual/rest/unifylogin?token='+token,
+            url: 'rest/unifylogin?token='+token,
             dataType: 'json',
             type: 'get',
             contentType: 'application/json',
