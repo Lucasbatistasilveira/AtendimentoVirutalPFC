@@ -23,7 +23,8 @@ public class Util {
 		public static class EmailMessages
 		{
 			public static final String EMAIL_LOGIN_UNIFY_BUDY = "Olá, %s! Seja bem vindo ao atendimento virtual <br><br> "
-												 + "Clique no link http://localhost:8082/antendimentovirtual/unify-login.html?token=%s  para escolher o login que deseja manter<br><br>"
+												 + "Clique no link http://localhost:8082/antendimentovirtual/unify-login.html?token=%s  para escolher o login que deseja manter.<br><br>"
+												 + "Este link será válido por apenas 48 horas. Caso ele se expire, você deverá repetir o processo."
 												 + "Atenciosamente, <br>Atenimento Virtual UFMG";
 		}
 		
@@ -42,7 +43,7 @@ public class Util {
 			
 			public static class StateInternet
 			{
-				public static final String UNKNOWN = "Desculpe, sistema operacional não conhecido, poderia repetir?";
+				public static final String UNKNOWN = "Desculpe, sistema operacional não conhecido, poderia repetir, por favor?";
 				public static final String ASK_ABOUT_SO = "Ok. Qual é o seu Sistema Operacional?";
 				public static class SO 
 				{
@@ -62,7 +63,7 @@ public class Util {
 			{
 				public static final String USER_AFFIRMATION = "É muito bom me sentir prestativo! E que bom que poderei te ajudar! Estou te enviando um email para que você possa escolher um dos logins ativos. Abraço!";
 				public static final String USER_DENIAL = "Pelo que parece você não quer que sejam feitas alterações nos seus logins, logo não farei. Fique a vontade para tirar as suas dúvidas quando quiser. Abraço.";
-				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir?";
+				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir, por favor?";
 			}
 			
 		}

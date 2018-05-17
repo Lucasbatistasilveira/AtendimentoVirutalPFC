@@ -59,9 +59,10 @@ public class ChatService implements IChatService {
 			break;
 		case "Unify_Login":
 			result = State_UnifyLogin(msg, new JSONObject());
+			break;
 		default:
 			result.setMessage(StateSetup.UNKNOWN);
-			User.setContext("init");
+			
 		}
 		
 		_sqlAgent.insertUserContext();
@@ -109,7 +110,7 @@ public class ChatService implements IChatService {
 				break;
 			default:
 				result.setMessage(StateInit.UNKNOWN);
-				User.setContext("init");
+			
 		}
 		result.setId(User.getGuid());
 		return result;

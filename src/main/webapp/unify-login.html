@@ -91,7 +91,7 @@ height: 180px;
 	<div class="box_logins">
 	<div class="div-content">
 		<span class="box_login_title">
-			Olá! Para a unificação dos seus dados é preciso que você selecione um dos dois logins abaixo para que seja o seu <strong>único login</strong> e depois clique em enviar.
+			Olï¿½! Para a unificaï¿½ï¿½o dos seus dados ï¿½ preciso que vocï¿½ selecione um dos dois logins abaixo para que seja o seu <strong>ï¿½nico login</strong> e depois clique em enviar.
 		</span>
 	</div>
 	<div class="flex div-content-logins">
@@ -116,8 +116,8 @@ function VerifyTokenValid() {
 	var token = urlParams.token[0];
     localStorage.setItem("tokenlogin", token);
 	if(token != '') {
-        $.ajax({
-            url: 'http://localhost:8082/antendimentovirtual/rest/unifylogin?token='+token,
+		 $.ajax({
+            url: 'rest/unifylogin?token='+token,
             dataType: 'json',
             type: 'get',
             contentType: 'application/json',
@@ -126,7 +126,7 @@ function VerifyTokenValid() {
 				if(response['status'] == "false") {
 					var firstLogin = document.getElementById("firstLogin");
 					var secondLogin = document.getElementById("secondLogin");
-					document.getElementById("messageAlert").innerHTML = "Desculpe, mas este link não é mais válido. Neste caso, ou ele está expirado ou já foi utilizado.";
+					document.getElementById("messageAlert").innerHTML = "Desculpe, mas este link nï¿½o ï¿½ mais vï¿½lido. Neste caso, ou ele estï¿½ expirado ou jï¿½ foi utilizado.";
 					firstLogin.innerHTML = "-";
 					secondLogin.innerHTML = "-";
 					firstLogin.disabled = true;
@@ -198,7 +198,7 @@ function VerifyTokenValid() {
 		var stateSecondLogin =  document.getElementById("secondLogin").classList.contains('green');
 		var userLogin = '';
 		if(!stateFirstLogin && !stateSecondLogin) {
-			document.getElementById("messageAlert").innerHTML = "Você deve escolher um dos dois logins para continuar!";
+			document.getElementById("messageAlert").innerHTML = "Vocï¿½ deve escolher um dos dois logins para continuar!";
 			return;
 		}
 		if(stateFirstLogin && !stateSecondLogin) {
