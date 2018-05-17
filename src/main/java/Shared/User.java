@@ -10,6 +10,15 @@ public class User {
 	public static String state;
 	public static String registration;
 	public static String name;
+	public static String cpf;
+
+	public static String getCpf() {
+		return cpf;
+	}
+
+	public static void setCpf(String cpf) {
+		User.cpf = cpf;
+	}
 
 	public User(String cont, String guid, String message, String state, String registration, String name) {
 		super();

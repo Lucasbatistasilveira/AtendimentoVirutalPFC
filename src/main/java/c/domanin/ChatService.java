@@ -68,7 +68,7 @@ public class ChatService implements IChatService {
 			User.setContext("init");
 		}
 		
-		_sqlAgent.insertUserContext();
+		_sqlAgent.insertUserContext(result.getMessage());
 		
 		return result;
 	}
@@ -84,8 +84,10 @@ public class ChatService implements IChatService {
 		User.setMessage("");
 		User.setRegistration("");
 		User.setState("");
+		User.setCpf("");
+		User.setName("");
 		
-		_sqlAgent.insertUserContext();
+		_sqlAgent.insertUserContext("");
 		
 		RetornoNLP result = new RetornoNLP();
 		result.setId(guid.toString());
@@ -123,6 +125,7 @@ public class ChatService implements IChatService {
 	private RetornoNLP State_InconsistencyMoodle(String msg,JSONObject jsonWit) {
 		
 		RetornoNLP result = new RetornoNLP();
+		boolean unifyLogin = true;
 		
 		switch(User.getContext()) {
 		case  "init":
@@ -142,19 +145,23 @@ public class ChatService implements IChatService {
 					register = _sqlAgent.getLogin(reg);
 					if (register.size() > 1 ) {
 						if(LoginsAreDifferent(register)) {
+							unifyLogin = false;
 							result.setMessage(StateMoodleInconsistency.DIFFERENT_LOGIN_FOUND);
 							User.setContext("Unify_Login");
 							User.setRegistration(reg);
 						}
 					}
-					boolean[] checkcourses = _sqlAgent.CheckCoursesAssociated(reg);
-					if(!checkcourses[0]) {
-						result.setMessage(StateMoodleInconsistency.COURSES_NOT_FOUND);
-					}else if(!checkcourses[1]) {
-						result.setMessage(StateMoodleInconsistency.COURSES_UNDER_TWO_DAYS);
-					}else {
-						result.setMessage(StateMoodleInconsistency.SUCCESS);
-						User.setContext("email_verification");
+					
+					if(unifyLogin) {
+						boolean[] checkcourses = _sqlAgent.CheckCoursesAssociated(reg);
+						if(!checkcourses[0]) {
+							result.setMessage(StateMoodleInconsistency.COURSES_NOT_FOUND);
+						}else if(!checkcourses[1]) {
+							result.setMessage(StateMoodleInconsistency.COURSES_UNDER_TWO_DAYS);
+						}else {
+							result.setMessage(StateMoodleInconsistency.SUCCESS);
+							User.setContext("email_verification");
+						}
 					}
 				}else {
 					result.setMessage(String.format(StateMoodleInconsistency.LOGIN_NOT_FOUND, reg)); 
@@ -192,8 +199,12 @@ public class ChatService implements IChatService {
 			register = matcher.group();
 		}
 		
-		if(register.length() == 10) return register;
-		else return null;
+		if(register != null) {
+			if(register.length() == 10) return register;
+			else return null;
+		}
+		
+		return null;
 	}
 	
 	private boolean GetRegisterIfExist(String registration) { 

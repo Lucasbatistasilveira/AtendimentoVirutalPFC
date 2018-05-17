@@ -55,7 +55,7 @@ public class Util {
 				public static final String ASK_ABOUT_REGISTER =  "Identifiquei que você possui problemas relacionados a inconsistências no moodle. Você poderia me informar o seu número de matrícula?";
 				public static final String WRONG_REGISTER_FORMAT = "Matrícula no formato não conhecido. Por favor digite-a novamente.";
 				public static final String DIFFERENT_LOGIN_FOUND = "Foram encontrados logins diferentes para a mesma pessoa. Caso queira que eu resolva este problema, por favor, digite sim.";
-				public static final String LOGIN_NOT_FOUND = "Não foi identificado nenhum cadastro no minhaUFMG associado ao número de matrícula %s. Para realizar o cadastro basta acessar o <a href=\"https://sistemas.ufmg.br/nip\" target=\"_blank\">link</a> e informar o seu CPF e senha provisória cadastrada para ter acesso à sua folha de NIPs'";
+				public static final String LOGIN_NOT_FOUND = "Não foi identificado nenhum cadastro no minhaUFMG associado ao número de matrícula %s. Para realizar o cadastro basta acessar o <a href=\"https://sistemas.ufmg.br/nip\" target=\"_blank\">link</a> e informar o seu CPF e senha provisória cadastrada para ter acesso à sua folha de NIPs'. Posso ajudar com algo mais?";
 				public static final String COURSES_NOT_FOUND = "Não foram encontradas nenhuma turma associada à sua matrícula. Favor entrar em contato com o colegiado do seu curso.";
 				public static final String COURSES_UNDER_TWO_DAYS = "Alguma(s) turma(s) associada à sua matrícula foi adicionada ao banco de dados com menos de 48 horas. Por favor aguarde esse período para que o sistema se estabilize.";
 				public static final String SUCCESS = "Não consegui identificar nenhum problema com a sua matrícula. Deseja verificar o status do seu correio eletrônico?";

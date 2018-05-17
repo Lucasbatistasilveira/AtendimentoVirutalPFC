@@ -38,8 +38,8 @@ public class SQLRepository implements ISqlRepository {
 			 											  	  "FROM info_general " + 
 			                                                  "WHERE registro = ?";
 	
-	private final static String SQL_INSERT_CONTEXT = "INSERT INTO chatlog (guid, context, message, state, registration)"
-												   + " VALUES (?, ?, ?, ?,? )";
+	private final static String SQL_INSERT_CONTEXT = "INSERT INTO chatlog (guid, context, message, state, registration, name, cpf, chatmsg)"
+												   + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private final static String SQL_CHECK_REGISTER_UNITY = "SELECT * " + 
 														   "FROM info_general " + 
@@ -75,6 +75,8 @@ public class SQLRepository implements ISqlRepository {
 				User.setMessage(rs.getString("message"));
 				User.setState(rs.getString("state"));
 				User.setRegistration(rs.getString("registration"));
+				User.setName(rs.getString("name"));
+				User.setCpf(rs.getString("cpf"));
 				//TODO:: Inserir o campo name
 			}
 			
@@ -88,7 +90,7 @@ public class SQLRepository implements ISqlRepository {
 		}
 	}
 	
-	public void insertUserContext() 
+	public void insertUserContext(String chatmsg) 
 	{	 
 		makeJDBCConnection();
 		try { 
@@ -98,6 +100,9 @@ public class SQLRepository implements ISqlRepository {
 			crunchifyPrepareStat.setString(3, User.getMessage());
 			crunchifyPrepareStat.setString(4, User.getState());
 			crunchifyPrepareStat.setString(5, User.getRegistration());
+			crunchifyPrepareStat.setString(6, User.getName());
+			crunchifyPrepareStat.setString(7, User.getCpf());
+			crunchifyPrepareStat.setString(8, chatmsg);
 			//TODO:: Inserir o campo name
 	
 			crunchifyPrepareStat.executeUpdate();
@@ -166,7 +171,10 @@ public class SQLRepository implements ISqlRepository {
 				register.setLogin(rs.getString("login"));
 				register.setRegister(rs.getString("registro"));
 				list.add(register);
+				User.setName(rs.getString("nome"));
+				User.setCpf(rs.getString("cpf"));
 			}
+		
 			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
