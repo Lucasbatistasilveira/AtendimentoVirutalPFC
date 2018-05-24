@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+	background-color: #ECECEC
+}
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 18px;
+
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+
+}
+/* Style the buttons */
+.btn {
+    border: none;
+    outline: none;
+    width: 50%;
+    padding: 12px 16px;
+    background-color: B9DEC5;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #ddd;
+}
+
+.btn.active {
+    background-color: #33744B;
+    color: white;
+}
+
+
+.container {
+	display: flex;
+}
+.shell {
+	flex-direction: column;
+}
+.titulo {
+	width: 100%;
+	justify-content: center;
+	background-color: #8DBE9E;
+}
+
+.coluna-inputs {
+	margin-right: 20px;
+}
+
+.btn-mensagem {
+	width: 100%;
+}
+.btn-mensagens {
+	width: 100%;
+	margin-bottom: 18px;
+}
+.mensagem {
+	width: 100%;
+}
+
+.container-mensagem-botoes {
+    flex-direction: column;
+    justify-content: space-between;
+}
+.botoes-selecao {
+margin-top: 18px;
+
+}
+.botoes {
+	justify-content: flex-end;
+}
+
+.green {
+	color: green;
+}
+
+.red {
+	color: red;
+}
+
+.space-right {
+	margin-right: 20px;
+}
+
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;	
+}
+
+
+.box-numero {
+	width: 30px;
+}
+
+.mensagens-botoes{
+	width: 100%;
+	flex-direction: column;
+}
+
+.mostra-numeros {
+	justify-content: space-around;
+}
+
+.todos-elementos {
+	    background-color: #B9DEC5 !important;
+	    flex-direction: column;
+	        padding: 18px;
+}
+.center {
+	
+	justify-content: center;
+}
+</style>
+</head>
+<body onload="FillContent()">
+<div class="container titulo">
+	<h2 > Monitor de Treinamento</h2>
+</div>
+
+
+<div class="container botoes-selecao" id="btnContainer">
+<button id="btnNova"class="btn active" onclick="NewIntents()"><i class="fa fa-bars"></i> Intenções Novas</button> 
+<button id="btnTreinamento" class="btn" onclick="TrainingIntens()"><i class="fa fa-th-large"></i> Intenções para Treinamento</button>
+</div>
+<br class="red">
+
+<div class="container shell" >
+	<div id="contents" class="row contants">
+		  <div class="container todos-elementos">
+		  	  <div class="container center">
+		  	  <span>TEEESTE</span>
+		  	  </div>
+			  <div class="column container" >
+			  	<div class="shell container coluna-inputs">
+					
+				   	<select name="intencoes" style="height: 21.33px; width: 150px">
+					    <option value="intent">Intenções</option>
+					    <option value="saudacao">Saudação</option>
+					    <option value="inconsistencia">Inconsistência</option>
+					    <option value="internet">Internet</option>
+					    <option value="afirmacao">Afirmação</option>
+					    <option value="negacao">Negação</option>
+					</select>
+	   	
+			  	</div>
+			  	<div class="container mensagens-botoes">
+				  	<div class="container mostra-numeros">
+				  		<div>
+					  		<label>Número de Mensagens: </label>
+					  		<input class="box-numero">		 
+				  		</div>
+						<div>
+						  	<label>Número de Usuários: </label>
+						   	<input class="box-numero">	
+						</div>	
+				  	</div>
+				  	<div class="mensagem container-mensagem-botoes container">
+				  		<label style="margin-bottom: 18px;">Mensagens: </label>
+					  	<div class="mensagem ">
+							<input class="btn-mensagens">	
+						   	<input class="btn-mensagens">	
+						   	<input class="btn-mensagens">	
+						   	<input class="btn-mensagens">	
+					  	</div>
+					  	<div class="container botoes">
+					  		<button onclick="intencao('1')"class="space-right"><i class="fa fa-check green"></i> Validar Intenção</button> 
+					  		<button ><i class="fa fa-trash-o red"></i> </button> 
+					  	</div>
+				  	</div>		  	
+			  	</div>
+			  </div>
+		  </div>
+		  
+	</div>
+</div>
+
+<script>
+function FillContent() {
+	
+	String.prototype.format = function (args) {
+		var str = this;
+		return str.replace(String.prototype.format.regex, function(item) {
+			var intVal = parseInt(item.substring(1, item.length - 1));
+			var replace;
+			if (intVal >= 0) {
+				replace = args[intVal];
+			} else if (intVal === -1) {
+				replace = "{";
+			} else if (intVal === -2) {
+				replace = "}";
+			} else {
+				replace = "";
+			}
+			return replace;
+		});
+	};
+	
+	
+	 //$.ajax({
+        // url: 'rest/trainingmonitor',
+      //   dataType: 'json',
+      //   type: 'get',
+      //   contentType: 'application/json',
+       //  success: function(response){
+         
+		//			debugger;
+        // }
+    // });
+
+	String.prototype.format.regex = new RegExp("{-?[0-9]+}", "g");
+    for (i = 0; i < 1; i++) {
+    	var showContent = "<div class='column container' id='div{6}' style='background-color:#aaa;'> "+
+    	"<div class='shell container coluna-inputs'> "+
+    		   "	<label>Intenção: </label> " +
+    		   	"<input value='{0}'>	"+
+    		    "<label>Confiança: </label>"+
+    		   	"<input value='{1}'>"+
+    		   	
+    		   	"<label>Estado: </label>"+
+    		   	"<input value='{2}'>		   	"+
+    	  	"</div>"+
+    	  	"<div class='mensagem container-mensagem-botoes container'>"+
+    		  	"<div class='mensagem '>"+
+    		  		"<label>Mensagem: </label>"+
+    			   	"<input value='{3}' class='btn-mensagem'>	"+
+    		  	"</div>"+
+    		  	"<div class='container botoes'>"+
+    		  		"<button  class='space-right' onclick=\"ValidateIntent('{4}')\" ><i id='buttonval{6}' class='fa fa-check green'></i> Validar Intenção</button> "+
+    		  		"<button  onclick=\"DeleteIntent('{5}')\" ><i id='buttondel{6}'class='fa fa-trash-o red'></i> </button> "+
+    		  	"</div>"+
+    	"</div>"+
+    	"</div>";
+
+    	showContent = showContent.format(["intent"+i.toString(),"confianca"+i.toString(),"estado"+i.toString(),"mensagem"+i.toString(),i.toString(),i.toString(),i.toString()]);
+
+    	$(showContent).appendTo('.contants');
+    }
+	
+}
+// Get the elements with class="column"
+var elements = document.getElementsByClassName("column");
+
+// Declare a loop variable
+var i;
+
+// List View
+function NewIntents() {
+	$("#btnNova").addClass("active");	
+	$("#btnTreinamento").removeClass("active");	
+    for (i = 0; i < elements.length; i++) {
+        elements[i].style.width = "100%";
+    }
+}
+
+// Grid View
+function TrainingIntens() {
+	$("#btnNova").removeClass("active");	
+	$("#btnTreinamento").addClass("active");	
+	//$("#contents").empty();
+	
+    for (i = 0; i < elements.length; i++) {
+       elements[i].style.width = "50%";
+    }
+}
+function ValidateIntent(numero) {
+   // $.ajax({
+       // url: 'rest/trainingmonitor',
+       // dataType: 'json',
+      //  type: 'post',
+      //  contentType: 'application/json',
+      //  data: JSON.stringify( {"intencao" : "intent", "mensagem" : "mensagem"}),
+      //  success: function(response){
+            //tratar resposta do servidor
+            //bloquear a div
+    //    }
+ //   });
+   	debugger;
+   	var div = "#div"+numero;
+	$("#buttondel"+numero).removeClass("red");
+	$(div).addClass("disabledbutton");
+
+	debugger;
+}
+
+function DeleteIntent(numero) {
+  	debugger;
+	$("#div"+numero).addClass("disabledbutton");
+	$("#buttonval"+numero).removeClass("green");
+	debugger;
+	debugger;
+}
+</script>
+
+</body>
+</html>
