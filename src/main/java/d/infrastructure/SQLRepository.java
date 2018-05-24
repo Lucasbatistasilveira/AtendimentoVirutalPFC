@@ -60,6 +60,22 @@ public class SQLRepository implements ISqlRepository {
 	
 	private final static String SQL_CHECK_COURSES_ASSOCIATED = "SELECT Data FROM usercourses WHERE Registro = ?";
 	
+	private final static String SQL_GET_LAST_INTENT_ID = "SELECT id FROM info_training WHERE 1 ORDER BY id DESC LIMIT 1";
+	
+	private final static String SQL_INSERT_NEW_INTENT = "INSERT INTO info_training (intent, id, date) VALUES (?, NULL, CURRENT_DATE)";
+	
+	private final static String SQL_INSERT_NEW_INTENT_LOG = "INSERT INTO log_training(id, intent_count, user_count, message, user_id, confidence, current_state) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	
+	private final static String SQL_GET_INTENT_COUNT = "SELECT intent_count FROM log_training WHERE id = ? ORDER BY intent_count DESC LIMIT 1";
+	
+	private final static String SQL_GET_INTENT_USER_COUNT = "SELECT user_count FROM log_training WHERE id = ? ORDER BY intent_count DESC LIMIT 1";
+	
+	private final static String SQL_CHECK_INTENT_PLUS_USER = "SELECT user_count FROM log_training WHERE id = ? AND user_id = ?";
+	
+	private final static String SQL_GET_INTENT_ID = "SELECT id FROM info_training WHERE intent = ?";
+	
+	private final static String SQL_GET_TRAINING_DB = "SELECT * FROM log_training as A NATURAL JOIN info_training as B ORDER BY id DESC,intent_count DESC";
+	
 	public void getUserContext(String userGuid) {
 		makeJDBCConnection();
 		try 
@@ -278,9 +294,166 @@ public class SQLRepository implements ISqlRepository {
 		
 	}
 
+	public int GetLastIntentId() {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_GET_LAST_INTENT_ID);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt("id");
+			}else {
+				return 0;
+			}
+			//TODO::Inserir o nome!!
+			//TODO::Inserir o CPF
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public void InsertNewIntent(String intentName) {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_INSERT_NEW_INTENT);
+			crunchifyPrepareStat.setString(1, intentName);
+			crunchifyPrepareStat.executeUpdate();
+		} catch (
+ 
+		SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
+	public void InsertNewIntentLog(int id,RetornoNLP returnNLP,String message,int intentCount,int intentUserCount) {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_INSERT_NEW_INTENT_LOG);
+			crunchifyPrepareStat.setInt(1, id);
+			crunchifyPrepareStat.setInt(2, intentCount);
+			crunchifyPrepareStat.setInt(3, intentUserCount);
+			crunchifyPrepareStat.setString(4, message);
+			crunchifyPrepareStat.setString(5, User.getGuid());
+			crunchifyPrepareStat.setDouble(6, returnNLP.getConfidence());
+			crunchifyPrepareStat.setString(7, User.getState());
+			
+			crunchifyPrepareStat.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// SQL_INSERT_NEW_INTENT_LOG = "INSERT INTO log_training (id, intent_count, user_count, message, user_id, confidence, current_state) VALUES (?, ?, ?, ?, ?, ?, ?)"
+	
+	
+	public int GetIntentCount(int id) {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_GET_INTENT_COUNT);
+			crunchifyPrepareStat.setInt(1, id);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt("intent_count");
+			}else {
+				return 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public int GetIntentUserCount(int id) {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_GET_INTENT_USER_COUNT);
+			crunchifyPrepareStat.setInt(1, id);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt("user_count");
+			}else {
+				return 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public int CheckIntentPlusUser(int id) {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_CHECK_INTENT_PLUS_USER);
+			crunchifyPrepareStat.setInt(1, id);
+			crunchifyPrepareStat.setString(2, User.getGuid());
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			
+			if(rs.next()) {
+				return 0;
+			}else {
+				return 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
 
-
+	public int GetIntentId(String intentName) {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_GET_INTENT_ID);
+			crunchifyPrepareStat.setString(1, intentName);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt("id");
+			}else {
+				return 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public List<TrainingDB> GetTrainingDB() {
+		
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_GET_TRAINING_DB);
+			ResultSet rs = crunchifyPrepareStat.executeQuery();
+			
+			List<TrainingDB> result = new ArrayList<TrainingDB>();
+			
+			while(rs.next()) {
+				TrainingDB trainingInput = new TrainingDB();
+				trainingInput.setConfident(rs.getDouble("confidence"));
+				trainingInput.setIntent(rs.getString("intent"));
+				trainingInput.setIntentCount(rs.getInt("intent_count"));
+				trainingInput.setUserCount(rs.getInt("user_count"));
+				trainingInput.setState("State");
+				trainingInput.setMessage(rs.getString("message"));
+				if(trainingInput.getIntent().contains("Intencao")) {
+					trainingInput.setNewIntent(true);
+				}else {
+					trainingInput.setNewIntent(false);
+				}
+				
+				result.add(trainingInput);
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}		
+	}
+	
+	//SQL_GET_INTENT_ID
 
 
 }

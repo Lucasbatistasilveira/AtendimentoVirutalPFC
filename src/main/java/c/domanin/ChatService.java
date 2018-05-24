@@ -115,7 +115,9 @@ public class ChatService implements IChatService {
 				break;
 			default:
 				result.setMessage(StateInit.UNKNOWN);
-			
+				
+				CheckUnknowledge(message);
+				User.setContext("init");
 		}
 		result.setId(User.getGuid());
 		return result;
@@ -205,11 +207,6 @@ public class ChatService implements IChatService {
 		}
 		
 		return null;
-	}
-	
-	private boolean GetRegisterIfExist(String registration) { 
-		
-		return false;
 	}
 	
 	private RetornoNLP State_Internet(String message,JSONObject jsonWit) {
@@ -330,6 +327,37 @@ public class ChatService implements IChatService {
 			break;
 		}
 		return result;
+	}
+	
+	private void CheckUnknowledge(String msg) {
+		
+		JSONObject wit = new JSONObject();
+		wit = _nlpAgent.SendWitSecondary(msg);		
+		
+		RetornoNLP result = JSONtoRetornoNLP(wit);
+		
+		int intentId = 0;
+		String intent = "";
+		
+		if(result.getIntent() == "") {
+			
+			intentId = _sqlAgent.GetLastIntentId() + 1;
+			intent = String.format("Intencao%d", intentId);
+			
+			_sqlAgent.InsertNewIntent(intent);
+			_sqlAgent.InsertNewIntentLog(intentId, result, msg,1,1);
+			_nlpAgent.CreateNewIntent(msg,intent);
+			
+			System.out.println("Cria nova intenção. Id nome : " + intent);	
+		}else {
+			
+			intent = result.getIntent();
+			intentId = _sqlAgent.GetIntentId(intent);
+			_sqlAgent.InsertNewIntentLog(intentId, result, msg,_sqlAgent.GetIntentCount(intentId) + 1,_sqlAgent.GetIntentUserCount(intentId) + _sqlAgent.CheckIntentPlusUser(intentId));
+			_nlpAgent.CreateNewIntent(msg, intent);
+			System.out.println("Adiciona valor para intenção identificada.");
+					
+		}
 	}
 	
 	private String GetGreeting() {

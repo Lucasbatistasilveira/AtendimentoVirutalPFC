@@ -15,4 +15,10 @@ public interface ISqlRepository {
 	public void SetTokenAsViewed(String token);
 	public void InsertInconsistencyLogin(UUID loginGuid, String login, String register, String name, String cpf);
 	public boolean[] CheckCoursesAssociated(String reg);
+	public int GetLastIntentId();
+	public void InsertNewIntent(String intentName);
+	public void InsertNewIntentLog(int id,RetornoNLP returnNLP,String message,int intentCount,int intentUserCount);
+	public int GetIntentCount(int id);
+	public int GetIntentUserCount(int id);
+	public List<TrainingDB> GetTrainingDB();
 }
