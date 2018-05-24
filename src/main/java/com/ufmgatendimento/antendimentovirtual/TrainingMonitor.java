@@ -13,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 import a.host.RequestLogin;
 import a.host.RequestTraining;
 import a.host.ResponseLogin;
+import a.host.ResponseUpdateTraining;
+import a.host.UpdateTraining;
 import b.application.TrainingAppService;
 
 @Path("trainingmonitor")
@@ -32,7 +34,8 @@ public class TrainingMonitor {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseLogin SendMessage(RequestLogin userResponse){
+	public ResponseUpdateTraining SendMessage(UpdateTraining userResponse){
+		_trainingAppService.UpdateNlpTraining(userResponse);
 	    return null;
 	}
 }
