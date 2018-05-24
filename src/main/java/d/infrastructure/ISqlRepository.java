@@ -21,4 +21,5 @@ public interface ISqlRepository {
 	public int GetIntentCount(int id);
 	public int GetIntentUserCount(int id);
 	public List<TrainingDB> GetTrainingDB();
+	public void CheckLogTrainingAsViewed(String message);
 }
