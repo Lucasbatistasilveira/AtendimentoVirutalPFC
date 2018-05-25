@@ -64,7 +64,7 @@ public class SQLRepository implements ISqlRepository {
 	
 	private final static String SQL_INSERT_NEW_INTENT = "INSERT INTO info_training (intent, id, date) VALUES (?, NULL, CURRENT_DATE)";
 	
-	private final static String SQL_INSERT_NEW_INTENT_LOG = "INSERT INTO log_training(id, intent_count, user_count, message, user_id, confidence, current_state) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private final static String SQL_INSERT_NEW_INTENT_LOG = "INSERT INTO log_training(id, intent_count, user_count, message, user_id, confidence, current_state, viewed) VALUES (?, ?, ?, ?, ?, ?, ?, NULL)";
 	
 	private final static String SQL_GET_INTENT_COUNT = "SELECT intent_count FROM log_training WHERE id = ? ORDER BY intent_count DESC LIMIT 1";
 	
@@ -74,7 +74,9 @@ public class SQLRepository implements ISqlRepository {
 	
 	private final static String SQL_GET_INTENT_ID = "SELECT id FROM info_training WHERE intent = ?";
 	
-	private final static String SQL_GET_TRAINING_DB = "SELECT * FROM log_training as A NATURAL JOIN info_training as B ORDER BY id DESC,intent_count DESC";
+	private final static String SQL_GET_TRAINING_DB = "SELECT * FROM log_training as A NATURAL JOIN info_training as B WHERE viewed = FALSE ORDER BY id DESC,intent_count DESC";
+	
+	private final static String SQL_SET_TRAINING_LOG_AS_VIEWED = "UPDATE log_training SET viewed = TRUE WHERE message = ?";
 	
 	public void getUserContext(String userGuid) {
 		makeJDBCConnection();
@@ -451,6 +453,19 @@ public class SQLRepository implements ISqlRepository {
 			e.printStackTrace();
 			return null;
 		}		
+	}
+
+	public void CheckLogTrainingAsViewed(String message) {
+		makeJDBCConnection();
+		try { 
+			crunchifyPrepareStat = conn.prepareStatement(SQL_SET_TRAINING_LOG_AS_VIEWED);
+			crunchifyPrepareStat.setString(1, message);
+			crunchifyPrepareStat.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	//SQL_GET_INTENT_ID

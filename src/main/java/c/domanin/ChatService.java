@@ -103,14 +103,14 @@ public class ChatService implements IChatService {
 		RetornoNLP result = JSONtoRetornoNLP(jsonWit);
 		
 		switch(result.getIntent()) {
-			case "Saudação":
+			case "saudacao":
 				result.setMessage(String.format(StateInit.GREATING, GetGreeting()));
 				User.setContext("init");
 				break;
 			case "internet":
 				result = State_Internet("",jsonWit);
 				break;
-			case "inconsistency":
+			case "inconsistencia":
 				result = State_InconsistencyMoodle("",jsonWit);
 				break;
 			default:

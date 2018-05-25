@@ -16,7 +16,7 @@ import Shared.RetornoNLP;
 
 public class NLPAgent implements INLPAgent {
 	
-	private final static String UpdateIntentJson = "[{\"text\":\" %s + \","
+	private final static String UpdateIntentJson = "[{\"text\":\" %s \","
     		+ "\"entities\": ["
     		+ "{"
     		+ "	\"entity\": \"intent\","
@@ -142,6 +142,37 @@ public class NLPAgent implements INLPAgent {
             System.out.println(e);
 		}
 		return null;
+	}
+
+	public void UpdatePrimaryIntent(String message, String intent) {
+		try {
+			String url = "https://api.wit.ai/samples?v=20180524";
+			URL obj;
+			obj = new URL(url);
+			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+			
+			conn.setRequestProperty("Authorization", "Bearer SRJWMIJ7ZZBZYHQBGAZ6V4ABOMP56QD6");
+			conn.setRequestProperty("Content-Type", "application/json");
+		    conn.setDoOutput(true);
+		    conn.setRequestMethod("POST");
+		    
+		    OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
+		    String data = String.format(UpdateIntentJson, message, intent);
+		    
+		    out.write(data);
+		    out.close();
+		    
+		    new InputStreamReader(conn.getInputStream());
+		    
+		    
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
