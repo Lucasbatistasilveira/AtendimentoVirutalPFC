@@ -18,8 +18,8 @@ body {
     width: 100%;
     margin-bottom: 10px;
     margin-top: 18px;
-    background-color: #B9DEC5 !important;
-
+	background-color: #B9DEC5 !important;
+	padding: 18px;
 }
 
 /* Clear floats after the columns */
@@ -122,7 +122,7 @@ margin-top: 18px;
 .todos-elementos {
 	    background-color: #B9DEC5 !important;
 	    flex-direction: column;
-	        padding: 18px;
+	    
 }
 .center {
 	
@@ -135,64 +135,72 @@ margin-top: 18px;
 	<h2 > Monitor de Treinamento</h2>
 </div>
 
-
 <div class="container botoes-selecao" id="btnContainer">
-<button id="btnNova"class="btn active" onclick="NewIntents()"><i class="fa fa-bars"></i> Intenções Novas</button> 
-<button id="btnTreinamento" class="btn" onclick="TrainingIntens()"><i class="fa fa-th-large"></i> Intenções para Treinamento</button>
+<button id="btnTreinamento" class="btn active" onclick="TrainingIntens()"><i class="fa fa-th-large"></i> Intenï¿½ï¿½es para Treinamento</button>
+<button id="btnNova"class="btn" onclick="NewIntents()"><i class="fa fa-bars"></i> Intenï¿½ï¿½es Novas</button> 
 </div>
-<br class="red">
+
+<br >
 
 <div class="container shell" >
 	<div id="contents" class="row contants">
-		  <div class="container todos-elementos">
+	<!-- 
+	
+		   	<div class="container todos-elementos">
 		  	  <div class="container center">
-		  	  <span>TEEESTE</span>
+		  	  <span style="margin-top: 18px;">{0}</span>
 		  	  </div>
 			  <div class="column container" >
 			  	<div class="shell container coluna-inputs">
 					
 				   	<select name="intencoes" style="height: 21.33px; width: 150px">
-					    <option value="intent">Intenções</option>
-					    <option value="saudacao">Saudação</option>
-					    <option value="inconsistencia">Inconsistência</option>
+					    <option value="intent">Intenï¿½ï¿½es</option>
+					    <option value="saudacao">Saudaï¿½ï¿½o</option>
+					    <option value="inconsistencia">Inconsistï¿½ncia</option>
 					    <option value="internet">Internet</option>
-					    <option value="afirmacao">Afirmação</option>
-					    <option value="negacao">Negação</option>
+					    <option value="afirmacao">Afirmaï¿½ï¿½o</option>
+					    <option value="negacao">Negaï¿½ï¿½o</option>
 					</select>
 	   	
 			  	</div>
 			  	<div class="container mensagens-botoes">
 				  	<div class="container mostra-numeros">
 				  		<div>
-					  		<label>Número de Mensagens: </label>
-					  		<input class="box-numero">		 
+					  		<label>Nï¿½mero de Mensagens: </label>
+					  		<input class="box-numero" value='{1}'>		 
 				  		</div>
 						<div>
-						  	<label>Número de Usuários: </label>
-						   	<input class="box-numero">	
+						  	<label>Nï¿½mero de Usuï¿½rios: </label>
+						   	<input class="box-numero" value='{2}'>	
 						</div>	
 				  	</div>
 				  	<div class="mensagem container-mensagem-botoes container">
 				  		<label style="margin-bottom: 18px;">Mensagens: </label>
-					  	<div class="mensagem ">
+					  	<div id='mensagens' class="mensagem">
 							<input class="btn-mensagens">	
 						   	<input class="btn-mensagens">	
 						   	<input class="btn-mensagens">	
 						   	<input class="btn-mensagens">	
 					  	</div>
 					  	<div class="container botoes">
-					  		<button onclick="intencao('1')"class="space-right"><i class="fa fa-check green"></i> Validar Intenção</button> 
-					  		<button ><i class="fa fa-trash-o red"></i> </button> 
+					  		<button onclick="ValidateNewIntent({3})"class="space-right"><i class="fa fa-check green"></i> Validar Intenï¿½ï¿½o</button> 
+					  		<button onclick="DeleteNewIntent({3})" ><i class="fa fa-trash-o red"></i> </button> 
 					  	</div>
 				  	</div>		  	
 			  	</div>
 			  </div>
 		  </div>
 		  
+		  -->
+		  
 	</div>
 </div>
 
 <script>
+var intencoes;
+var newIntents;
+var trainingIntents;
+
 function FillContent() {
 	
 	String.prototype.format = function (args) {
@@ -213,45 +221,64 @@ function FillContent() {
 		});
 	};
 	
-	
-	 //$.ajax({
-        // url: 'rest/trainingmonitor',
-      //   dataType: 'json',
-      //   type: 'get',
-      //   contentType: 'application/json',
-       //  success: function(response){
-         
-		//			debugger;
-        // }
-    // });
-
 	String.prototype.format.regex = new RegExp("{-?[0-9]+}", "g");
+	
+	 $.ajax({
+         url: 'rest/trainingmonitor',
+         dataType: 'json',
+         type: 'get',
+       contentType: 'application/json',
+         success: function(response){
+             intencoes =  response.trainingList;
+             trainingIntents = [];
+             newIntents = [];
+             var i = 0;
+        	 for (intencao in response.trainingList) {
+        		var dadosIntencao = response.trainingList[intencao];
+        		
+        		if(dadosIntencao.newIntent == true) {
+        			newIntents.push(dadosIntencao);
+					
+        		    debugger;
+        		}else {
+
+        			trainingIntents.push(dadosIntencao);
+
+           		    debugger;
+        			var showContent = "<div class='column container' id='div{6}' style='background-color:#aaa;'> "+
+        	    	"<div class='shell container coluna-inputs'> "+
+        	    		   "	<label>Intenï¿½ï¿½o: </label> " +
+        	    		   	"<input value='{0}'>	"+
+        	    		    "<label>Confianï¿½a: </label>"+
+        	    		   	"<input value='{1}'>"+
+        	    		   	
+        	    		   	"<label>Estado: </label>"+
+        	    		   	"<input value='{2}'>		   	"+
+        	    	  	"</div>"+
+        	    	  	"<div class='mensagem container-mensagem-botoes container'>"+
+        	    		  	"<div class='mensagem '>"+
+        	    		  		"<label>Mensagem: </label>"+
+        	    			   	"<input value='{3}' class='btn-mensagem'>	"+
+        	    		  	"</div>"+
+        	    		  	"<div class='container botoes'>"+
+        	    		  		"<button  class='space-right' onclick=\"ValidateIntent('{4}')\" ><i id='buttonval{6}' class='fa fa-check green'></i> Validar Intenï¿½ï¿½o</button> "+
+        	    		  		"<button  onclick=\"DeleteIntent('{5}')\" ><i id='buttondel{6}'class='fa fa-trash-o red'></i> </button> "+
+        	    		  	"</div>"+
+        	    	"</div>"+
+        	    	"</div>";
+
+        	    	showContent = showContent.format([dadosIntencao.intent,dadosIntencao.confident,dadosIntencao.state,dadosIntencao.message,i.toString(),i.toString(),i.toString()]);
+        	    	$(showContent).appendTo('.contants');
+ 
+        		}
+        		i++;
+        	}
+         }
+     });
+
+	
     for (i = 0; i < 1; i++) {
-    	var showContent = "<div class='column container' id='div{6}' style='background-color:#aaa;'> "+
-    	"<div class='shell container coluna-inputs'> "+
-    		   "	<label>Intenção: </label> " +
-    		   	"<input value='{0}'>	"+
-    		    "<label>Confiança: </label>"+
-    		   	"<input value='{1}'>"+
-    		   	
-    		   	"<label>Estado: </label>"+
-    		   	"<input value='{2}'>		   	"+
-    	  	"</div>"+
-    	  	"<div class='mensagem container-mensagem-botoes container'>"+
-    		  	"<div class='mensagem '>"+
-    		  		"<label>Mensagem: </label>"+
-    			   	"<input value='{3}' class='btn-mensagem'>	"+
-    		  	"</div>"+
-    		  	"<div class='container botoes'>"+
-    		  		"<button  class='space-right' onclick=\"ValidateIntent('{4}')\" ><i id='buttonval{6}' class='fa fa-check green'></i> Validar Intenção</button> "+
-    		  		"<button  onclick=\"DeleteIntent('{5}')\" ><i id='buttondel{6}'class='fa fa-trash-o red'></i> </button> "+
-    		  	"</div>"+
-    	"</div>"+
-    	"</div>";
-
-    	showContent = showContent.format(["intent"+i.toString(),"confianca"+i.toString(),"estado"+i.toString(),"mensagem"+i.toString(),i.toString(),i.toString(),i.toString()]);
-
-    	$(showContent).appendTo('.contants');
+    	
     }
 	
 }
@@ -265,8 +292,57 @@ var i;
 function NewIntents() {
 	$("#btnNova").addClass("active");	
 	$("#btnTreinamento").removeClass("active");	
-    for (i = 0; i < elements.length; i++) {
-        elements[i].style.width = "100%";
+	 var i=0;
+	$("#contents").empty();
+	 debugger;
+	 for (intencao in newIntents) {
+		 var dadosIntencao = newIntents[intencao];
+    	var ShowNewIntent = "<div class='container todos-elementos'> "+
+	  	  "<div class='container center'>"+
+	  	  "<span style='margin-top: 18px;'>{0}</span>"+
+	  	 " </div>"+
+		 " <div class='column container' >"+
+		  	"<div class='shell container coluna-inputs'>"+
+			   	"<select name='intencoes' style='height: 21.33px; width: 150px;'>"+
+				 "  <option value='intent'>Intenï¿½ï¿½es</option>"+
+				  "  <option value='saudacao'>Saudaï¿½ï¿½o</option>"+
+				   " <option value='inconsistencia'>Inconsistï¿½ncia</option>"+
+				    "<option value='internet'>Internet</option>"+
+				   " <option value='afirmacao'>Afirmaï¿½ï¿½o</option>"+
+				 "   <option value='negacao'>Negaï¿½ï¿½o</option>"+
+				"</select>"+
+		  	"</div>"+
+		  	"<div class='container mensagens-botoes'>"+
+			 " 	<div class='container mostra-numeros'>"+
+			  "		<div>"+
+				  		"<label>Nï¿½mero de Mensagens: </label>"+
+				  		"<input class='box-numero' value='{1}'>	"+	 
+			  		"</div>"+
+					"<div>"+
+					  "	<label>Nï¿½mero de Usuï¿½rios: </label>"+
+					   "	<input class='box-numero' value='{2}'>	"+
+				"	</div>	"+
+			  "	</div>"+
+			  "	<div class='mensagem container-mensagem-botoes container'>"+
+			  		"<label style='margin-bottom: 18px;'>Mensagens: </label>"+
+				  	"<div id='mensagens' class='mensagem'>"+
+					"	<input class='btn-mensagens'>	"+
+					"   	<input class='btn-mensagens'>	"+
+					 "  	<input class='btn-mensagens'>	"+
+					 "  	<input class='btn-mensagens'>	"+
+				  	"</div>"+
+				  "	<div class='container botoes'>"+
+				  "		<button onclick=\"ValidateNewIntent('{3}')\" class='space-right'><i class='fa fa-check green'></i> Validar Intenï¿½ï¿½o</button>"+ 
+				  "		<button onclick=\"DeleteNewIntent('{4}')\"  ><i class='fa fa-trash-o red'></i> </button> "+
+				  	"</div>"+
+			  	"</div>		 "+ 	
+		  	"</div>"+
+		  "</div>"+
+	  "</div> <br>";
+	  
+	ShowNewIntent = ShowNewIntent.format([dadosIntencao.intent,dadosIntencao.intentCount,dadosIntencao.userCount,i.toString(),i.toString()]);
+	$(ShowNewIntent).appendTo('.contants');
+	 i++;
     }
 }
 
@@ -274,38 +350,88 @@ function NewIntents() {
 function TrainingIntens() {
 	$("#btnNova").removeClass("active");	
 	$("#btnTreinamento").addClass("active");	
-	//$("#contents").empty();
+	$("#contents").empty();
+	 var i=0;
+	 for (intencao in trainingIntents) {
+		 var dadosIntencao = trainingIntents[intencao];
+		 var showContent = "<div class='column container' id='div{6}' style='background-color:#aaa;'> "+
+	    	"<div class='shell container coluna-inputs'> "+
+	    		   "	<label>Intenï¿½ï¿½o: </label> " +
+	    		   	"<input value='{0}'>	"+
+	    		    "<label>Confianï¿½a: </label>"+
+	    		   	"<input value='{1}'>"+
+	    		   	
+	    		   	"<label>Estado: </label>"+
+	    		   	"<input value='{2}'>		   	"+
+	    	  	"</div>"+
+	    	  	"<div class='mensagem container-mensagem-botoes container'>"+
+	    		  	"<div class='mensagem '>"+
+	    		  		"<label>Mensagem: </label>"+
+	    			   	"<input value='{3}' class='btn-mensagem'>	"+
+	    		  	"</div>"+
+	    		  	"<div class='container botoes'>"+
+	    		  		"<button  class='space-right' onclick=\"ValidateIntent('{4}')\" ><i id='buttonval{6}' class='fa fa-check green'></i> Validar Intenï¿½ï¿½o</button> "+
+	    		  		"<button  onclick=\"DeleteIntent('{5}')\" ><i id='buttondel{6}'class='fa fa-trash-o red'></i> </button> "+
+	    		  	"</div>"+
+	    	"</div>"+
+	    	"</div>";
+
+	    	showContent = showContent.format([dadosIntencao.intent,dadosIntencao.confident,dadosIntencao.state,dadosIntencao.message,i.toString(),i.toString(),i.toString()]);
+	    	$(showContent).appendTo('.contants');
+		 
+		 i++;
+	 }
+
+}
+function ValidateNewIntent() {
 	
-    for (i = 0; i < elements.length; i++) {
-       elements[i].style.width = "50%";
-    }
+}
+
+function DeleteNewIntent() {
+	
 }
 function ValidateIntent(numero) {
-   // $.ajax({
-       // url: 'rest/trainingmonitor',
-       // dataType: 'json',
-      //  type: 'post',
-      //  contentType: 'application/json',
-      //  data: JSON.stringify( {"intencao" : "intent", "mensagem" : "mensagem"}),
-      //  success: function(response){
-            //tratar resposta do servidor
-            //bloquear a div
-    //    }
- //   });
-   	debugger;
+	var message = intencoes[numero].message;
+	var intent = intencoes[numero].intent;
+	
    	var div = "#div"+numero;
 	$("#buttondel"+numero).removeClass("red");
 	$(div).addClass("disabledbutton");
-
 	debugger;
+    $.ajax({
+        url: 'rest/trainingmonitor',
+        dataType: 'json',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify( {"intent" : intent, "message" : message, "action": "validate"}),
+        success: function(response){
+            //tratar resposta do servidor
+            //bloquear a div
+        }
+    });
 }
 
 function DeleteIntent(numero) {
   	debugger;
 	$("#div"+numero).addClass("disabledbutton");
 	$("#buttonval"+numero).removeClass("green");
+	
+	var message = intencoes[numero].message;
+	var intent = intencoes[numero].intent;
+	
+	$(div).addClass("disabledbutton");
 	debugger;
-	debugger;
+    $.ajax({
+        url: 'rest/trainingmonitor',
+        dataType: 'json',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify( {"intent" : intent, "message" : message, "action": "delete"}),
+        success: function(response){
+            //tratar resposta do servidor
+            //bloquear a div
+        }
+    });
 }
 </script>
 
