@@ -54,6 +54,7 @@ body {
 }
 .shell {
 	flex-direction: column;
+
 }
 .titulo {
 	width: 100%;
@@ -128,21 +129,40 @@ margin-top: 18px;
 	
 	justify-content: center;
 }
+
+.menu {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    top: 0;
+	background-color: #ECECEC
+}
+.margin-top {
+	margin-top: 126px;
+}
 </style>
 </head>
 <body onload="FillContent()">
-<div class="container titulo">
-	<h2 > Monitor de Treinamento</h2>
-</div>
 
+<<<<<<< HEAD
 <div class="container botoes-selecao" id="btnContainer">
 <button id="btnTreinamento" class="btn active" onclick="TrainingIntens()"><i class="fa fa-th-large"></i> Intenções para Treinamento</button>
 <button id="btnNova"class="btn" onclick="NewIntents()"><i class="fa fa-bars"></i> Intenções Novas</button> 
+=======
+<div class="menu">
+	<div class="container titulo">
+		<h2 > Monitor de Treinamento</h2>
+	</div>
+	
+	<div class="container botoes-selecao" id="btnContainer">
+	<button id="btnTreinamento" class="btn active" onclick="TrainingIntens()"><i class="fa fa-th-large"></i> Intenções para Treinamento</button>
+	<button id="btnNova"class="btn" onclick="NewIntents()"><i class="fa fa-bars"></i> Intenções Novas</button> 
+	</div>
+	<br >
+>>>>>>> 89c42f3d3a1a5c0415fcd98e891b3af7cc3c7181
 </div>
 
-<br >
-
-<div class="container shell" >
+<div class="container margin-top shell" >
 	<div id="contents" class="row contants">
 	<!-- 
 	
@@ -239,10 +259,10 @@ function FillContent() {
         		if(dadosIntencao.newIntent == true) {
         			newIntents.push(dadosIntencao);
 					
-        		    debugger;
         		}else {
 
         			trainingIntents.push(dadosIntencao);
+<<<<<<< HEAD
 
            		    debugger;
         			var showContent = "<div class='column container' id='div{6}' style='background-color:#aaa;'> "+
@@ -270,9 +290,13 @@ function FillContent() {
         	    	showContent = showContent.format([dadosIntencao.intent,dadosIntencao.confident,dadosIntencao.state,dadosIntencao.message,i.toString(),i.toString(),i.toString()]);
         	    	$(showContent).appendTo('.contants');
  
+=======
+>>>>>>> 89c42f3d3a1a5c0415fcd98e891b3af7cc3c7181
         		}
         		i++;
         	}
+        	debugger;
+        	TrainingIntens();
          }
      });
 
