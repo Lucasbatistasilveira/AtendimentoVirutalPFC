@@ -4,16 +4,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>UFMG Atendimento</title>
     <link rel= "stylesheet" type= "text/css" href= "style.css">
-    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body onload="userRegister()">
+
     <div class="chatbox">
+    	<div class="titulo container">
+			<span class="texto-titulo">Atendimento Virtual UFMG</span>
+		</div>
         <div id = "chatlogs" class="chatlogs">
      </div>    
         <div class="chat-form">
-            <input id="texto"  placeholder="Escreva alguma coisa..." onKeyUp="verificaEnter(this, event)" name="texto"></input>
-            <button id="submit">Enviar</button>
+            <input id="texto"  placeholder="Escreva alguma coisa..." onKeyUp="verificaEnter(this, event)" name="texto" autocomplete="off"></input>
+            <i id="submit" class="material-icons">send</i>
         </div>
     </div>
 
@@ -39,6 +43,12 @@
     var msg = {"msg":"msg de teste"}
 
     function verificaEnter(t,e){
+		if(t.value.length>0) {
+			$("#submit").addClass("green");
+		} else {
+			$("#submit").removeClass("green");
+		}
+		
         if (e.keyCode === 13){
             e.preventDefault();
             document.getElementById("submit").click();
@@ -48,7 +58,7 @@
             var texto = document.getElementById("texto").value;
             if (texto != ""){
 
-                $("<div class='chat user'><div class='user-photo'><img src='img/bot.png'></div><p class='chat-message arrow_box'>" + texto + "</p></div>").appendTo('.chatlogs');
+                $("<div class='chat user'><div class='user-photo'><img src='img/user.jpg'></div><p class='chat-message arrow_box'>" + texto + "</p></div>").appendTo('.chatlogs');
                 document.getElementById("texto").value = "";
                 var element = document.getElementById("chatlogs");
                 //inserindo o loading

@@ -2,8 +2,7 @@
 <html>
 <style>
 body {
-    background-image: url("background.jpg");
-    background-repeat: no-repeat;
+	background-color: #ECECEC;
     background-size: 100% 100%;
 }
 
@@ -40,13 +39,15 @@ height: 180px;
      width: 400px;
      height: 60px;
      border-radius: 40px 40px 40px 40px;
+     font-size: larger;
      
  }
  .button-login-hover:hover {
-     box-shadow: 0 3px 5px 0 rgb(83, 239, 117),0 1px 25px 0 rgb(59, 239, 99);
+     box-shadow: 0 1px 0px 0 #33744b, 0 1px 8px 0 #33744b;
  }
    .button-enviar {
-      box-shadow: 0 3px 5px 0 rgb(83, 239, 117),0 1px 25px 0 rgb(59, 239, 99);
+   				  
+      box-shadow: 0 1px 0px 0 #33744b, 0 1px 8px 0 #33744b;
  }
  
  .button-send {
@@ -55,15 +56,16 @@ height: 180px;
      height: 60px;
  }
  
- .green {
- 	background-color: green;
+ .verde {
+ 	background-color: #33744b;
+ 	color:black !important;
  }
  
 .box_login_title {
 	box-sizing: border-box;
 	display: inline-block;
 	color: black;
-	background-color: rgb(151, 157, 160);
+	background-color: #8DBF9F;
 	font-family: verdana;
 	padding: 15px 10px 10px 10px;
 	border-radius: 20px 20px 0 0;
@@ -91,7 +93,7 @@ height: 180px;
 	<div class="box_logins">
 	<div class="div-content">
 		<span class="box_login_title">
-			Olï¿½! Para a unificaï¿½ï¿½o dos seus dados ï¿½ preciso que vocï¿½ selecione um dos dois logins abaixo para que seja o seu <strong>ï¿½nico login</strong> e depois clique em enviar.
+			Olá! Para a unificação dos seus dados é preciso que você selecione um dos dois logins abaixo para que seja o seu <strong>único login</strong> e depois clique em enviar.
 		</span>
 	</div>
 	<div class="flex div-content-logins">
@@ -145,30 +147,30 @@ function VerifyTokenValid() {
 }
 
 	function firstLogin() {
-		if(document.getElementById("firstLogin").classList.contains('green')) {
-			$("#firstLogin").removeClass("green");
+		if(document.getElementById("firstLogin").classList.contains('verde')) {
+			$("#firstLogin").removeClass("verde");
 			$("#sendButton").removeClass("button-enviar");
 			
 		} else {
-			$("#firstLogin").addClass("green");
+			$("#firstLogin").addClass("verde");
 			document.getElementById("messageAlert").innerHTML = "";
 			$("#sendButton").addClass("button-enviar");
-			if(document.getElementById("secondLogin").classList.contains('green')) {
-				$("#secondLogin").removeClass("green");			
+			if(document.getElementById("secondLogin").classList.contains('verde')) {
+				$("#secondLogin").removeClass("verde");			
 			}
 		}
 	}
 	
 	function SecondLogin() {
-		if(document.getElementById("secondLogin").classList.contains('green')) {
-			$("#secondLogin").removeClass("green");	
+		if(document.getElementById("secondLogin").classList.contains('verde')) {
+			$("#secondLogin").removeClass("verde");	
 			$("#sendButton").removeClass("button-enviar");
 		} else {
 			document.getElementById("messageAlert").innerHTML = "";
-			$("#secondLogin").addClass("green");
+			$("#secondLogin").addClass("verde");
 			$("#sendButton").addClass("button-enviar");
-			if(document.getElementById("firstLogin").classList.contains('green')) {
-				$("#firstLogin").removeClass("green");
+			if(document.getElementById("firstLogin").classList.contains('verde')) {
+				$("#firstLogin").removeClass("verde");
 			}
 		}
 	}
@@ -194,8 +196,8 @@ function VerifyTokenValid() {
     }
     function Send() {
 		debugger;
-		var stateFirstLogin = document.getElementById("firstLogin").classList.contains('green');
-		var stateSecondLogin =  document.getElementById("secondLogin").classList.contains('green');
+		var stateFirstLogin = document.getElementById("firstLogin").classList.contains('verde');
+		var stateSecondLogin =  document.getElementById("secondLogin").classList.contains('verde');
 		var userLogin = '';
 		if(!stateFirstLogin && !stateSecondLogin) {
 			document.getElementById("messageAlert").innerHTML = "Vocï¿½ deve escolher um dos dois logins para continuar!";
