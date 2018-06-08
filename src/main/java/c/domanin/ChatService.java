@@ -102,22 +102,27 @@ public class ChatService implements IChatService {
 		User.setMessage(message);
 		RetornoNLP result = JSONtoRetornoNLP(jsonWit);
 		
-		switch(result.getIntent()) {
-			case "saudacao":
-				result.setMessage(String.format(StateInit.GREATING, GetGreeting()));
-				User.setContext("init");
-				break;
-			case "internet":
-				result = State_Internet("",jsonWit);
-				break;
-			case "inconsistencia":
-				result = State_InconsistencyMoodle("",jsonWit);
-				break;
-			default:
-				result.setMessage(StateInit.UNKNOWN);
-				
-				CheckUnknowledge(message);
-				User.setContext("init");
+		if(result.getConfidence() > Util.AppConstatns.CONFIDENCE_THRESHOLD) {
+			switch(result.getIntent()) {
+				case "saudacao":
+					result.setMessage(String.format(StateInit.GREATING, GetGreeting()));
+					User.setContext("init");
+					break;
+				case "internet":
+					result = State_Internet("",jsonWit);
+					break;
+				case "inconsistencia":
+					result = State_InconsistencyMoodle("",jsonWit);
+					break;
+				default:
+					result.setMessage(StateInit.UNKNOWN);
+					CheckUnknowledge(message);
+					User.setContext("init");
+			}
+		}else {
+			result.setMessage(StateInit.UNKNOWN);
+			CheckUnknowledge(message);
+			User.setContext("init");
 		}
 		result.setId(User.getGuid());
 		return result;
@@ -271,24 +276,29 @@ public class ChatService implements IChatService {
 		RetornoNLP result = JSONtoRetornoNLP(jsonWit);
 		User.setMessage(message);
 		
-		switch(result.getIntent()) {
-			case "afirmacao":
-				result.setMessage(StateUnifyLogin.USER_AFFIRMATION);
-				// TODO::Criar uma funcção que verifica se há chamado em aberto
-				SendEmailToUnifyLogin();
-//				TODO::mudar as frases de retorno da negacao tb
-				break;
-			case "negacao":
-				result.setMessage(StateUnifyLogin.USER_DENIAL);
-	
-				break;
-			default:
-				result.setMessage(StateUnifyLogin.UNKNOWN);
-				User.setContext("Unify_Login");
-				return result;
+		if(result.getConfidence() > Util.AppConstatns.CONFIDENCE_THRESHOLD) {
+			switch(result.getIntent()) {
+				case "afirmacao":
+					result.setMessage(StateUnifyLogin.USER_AFFIRMATION);
+					SendEmailToUnifyLogin();
+					break;
+				case "negacao":
+					result.setMessage(StateUnifyLogin.USER_DENIAL);
+					break;
+				default:
+					result.setMessage(StateUnifyLogin.UNKNOWN);
+					CheckUnknowledge(message);
+					User.setContext("Unify_Login");
+					return result;
+			}
+			result.setId(User.getGuid());
+			User.setContext("init");
+		}else {
+			result.setMessage(StateUnifyLogin.UNKNOWN);
+			CheckUnknowledge(message);
+			User.setContext("Unify_Login");
+			return result;
 		}
-		result.setId(User.getGuid());
-		User.setContext("init");
 		return result;
 		}
 
@@ -297,8 +307,6 @@ public class ChatService implements IChatService {
 		UUID loginGuid = UUID.randomUUID();
 		
 		for(Register r : register) {
-			//TODO::Inserir o nome!!
-			//TODO::Inserir o CPF
 			_sqlAgent.InsertInconsistencyLogin(loginGuid, r.getLogin(), r.getRegister(), "User_name", "User_cpf");
 			_emailAgent.generateAndSendEmail("Inconsistência na Matrícula", 
 											 String.format(Util.AppConstatns.EmailMessages.EMAIL_LOGIN_UNIFY_BUDY,"TODO::INSERIR O NOME",loginGuid),
@@ -309,19 +317,31 @@ public class ChatService implements IChatService {
 	private RetornoNLP State_EmailVerification(String msg) {
 		RetornoNLP result = new RetornoNLP();
 		
+		
 		switch(User.getContext()) {
 		case "email_verification":
 			JSONObject jsonWit = _nlpAgent.enviaWit(msg);
 			User.setMessage(msg);
 			result = JSONtoRetornoNLP(jsonWit);
-			switch(result.getIntent()) {
-			case "afirmacao":
-				System.out.println("Verifica correio eletrônico.");
-				break;
-			default:
-				System.out.println("Intenção não identificada.");
-					
+			if(result.getConfidence() > Util.AppConstatns.CONFIDENCE_THRESHOLD) {
+				switch(result.getIntent()) {
+				case "afirmacao":
+					result.setMessage(Util.AppConstatns.StateMessages.StateEmailVerification.USER_AFFIRMATION);
+					User.setContext("init");
+					break;
+				case "negacao":
+					result.setMessage(Util.AppConstatns.StateMessages.StateEmailVerification.USER_DENIAL);
+					User.setContext("init");
+					break;
+				default:
+					CheckUnknowledge(msg);
+					result.setMessage(Util.AppConstatns.StateMessages.StateEmailVerification.UNKNOWN);
+				}
+			}else {
+				CheckUnknowledge(msg);
+				result.setMessage(Util.AppConstatns.StateMessages.StateEmailVerification.UNKNOWN);
 			}
+			
 			
 			
 			break;
@@ -346,7 +366,11 @@ public class ChatService implements IChatService {
 			
 			_sqlAgent.InsertNewIntent(intent);
 			_sqlAgent.InsertNewIntentLog(intentId, result, msg,1,1);
-			_nlpAgent.CreateNewIntent(msg,intent);
+			
+			for(int i = 0; i < 5; i++) {
+				_nlpAgent.CreateNewIntent(msg,intent);
+			}
+			
 			
 			System.out.println("Cria nova intenção. Id nome : " + intent);	
 		}else {
@@ -355,7 +379,7 @@ public class ChatService implements IChatService {
 			intentId = _sqlAgent.GetIntentId(intent);
 			_sqlAgent.InsertNewIntentLog(intentId, result, msg,_sqlAgent.GetIntentCount(intentId) + 1,_sqlAgent.GetIntentUserCount(intentId) + _sqlAgent.CheckIntentPlusUser(intentId));
 			_nlpAgent.CreateNewIntent(msg, intent);
-			System.out.println("Adiciona valor para intenção identificada.");
+			System.out.println("Adiciona valor para intenção identificada." + intent);
 					
 		}
 	}

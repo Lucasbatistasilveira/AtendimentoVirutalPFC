@@ -5,6 +5,9 @@ public class Util {
 	
 	public static class AppConstatns
     {
+		
+		public static double CONFIDENCE_THRESHOLD = 0.9;
+		
 		public static class Messages
 		{
 			public static final String WELCOME = "Seja bem vindo ao Atendimento Virtual UFMG. Aqui você pode tirar dúvidas relacionadas ao cadastro no minhaUFMG, ao correio eletrônico e à conexão com a Internet. Com o que posso ajudar?";
@@ -69,6 +72,12 @@ public class Util {
 				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir, por favor?";
 			}
 			
+			public static class StateEmailVerification
+			{
+				public static final String USER_AFFIRMATION = "Muito bom poder resolver isso pra você. Um chamado está sendo aberto para que meu supervisor tome conta pessoalmente do seu caso. Abraço!";
+				public static final String USER_DENIAL = "Pelo que entendi você não deseja verificar o status do seu e-mail. Caso tenha mais alguma dúvida, sinta-se à vontade para me perguntar. Abraço!";
+				public static final String UNKNOWN = "Desculpe, não entendi o que disse. Gostaria de saber se deseja verificar o status do seu e-mail?";
+			}
 		}
 		
     }
