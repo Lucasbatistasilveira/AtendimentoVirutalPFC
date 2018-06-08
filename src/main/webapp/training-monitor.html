@@ -287,54 +287,64 @@ function NewIntents() {
 	 var i=0;
 	$("#contents").empty();
 	 debugger;
+	 var dadosIntencaoandtigo = [];
 	 for (intencao in newIntents) {
+		 debugger;
 		 var dadosIntencao = newIntents[intencao];
-    	var ShowNewIntent = "<div class='container todos-elementos'> "+
-	  	  "<div class='container center'>"+
-	  	  "<span style='margin-top: 18px;'>{0}</span>"+
-	  	 " </div>"+
-		 " <div class='column container' >"+
-		  	"<div class='shell container coluna-inputs'>"+
-			   	"<select name='intencoes' style='height: 21.33px; width: 150px;'>"+
-				 "  <option value='intent'>Intenções</option>"+
-				  "  <option value='saudacao'>Saudação</option>"+
-				   " <option value='inconsistencia'>Inconsistência</option>"+
-				    "<option value='internet'>Internet</option>"+
-				   " <option value='afirmacao'>Afirmação</option>"+
-				 "   <option value='negacao'>Negação</option>"+
-				"</select>"+
-		  	"</div>"+
-		  	"<div class='container mensagens-botoes'>"+
-			 " 	<div class='container mostra-numeros'>"+
-			  "		<div>"+
-				  		"<label>Número de Mensagens: </label>"+
-				  		"<input class='box-numero' value='{1}'>	"+	 
-			  		"</div>"+
-					"<div>"+
-					  "	<label>Nï¿½mero de Usuï¿½rios: </label>"+
-					   "	<input class='box-numero' value='{2}'>	"+
-				"	</div>	"+
-			  "	</div>"+
-			  "	<div class='mensagem container-mensagem-botoes container'>"+
-			  		"<label style='margin-bottom: 18px;'>Mensagens: </label>"+
-				  	"<div id='mensagens' class='mensagem'>"+
-					"	<input class='btn-mensagens'>	"+
-					"   	<input class='btn-mensagens'>	"+
-					 "  	<input class='btn-mensagens'>	"+
-					 "  	<input class='btn-mensagens'>	"+
-				  	"</div>"+
-				  "	<div class='container botoes'>"+
-				  "		<button onclick=\"ValidateNewIntent('{3}')\" class='space-right'><i class='fa fa-check green'></i> Validar Intenï¿½ï¿½o</button>"+ 
-				  "		<button onclick=\"DeleteNewIntent('{4}')\"  ><i class='fa fa-trash-o red'></i> </button> "+
-				  	"</div>"+
-			  	"</div>		 "+ 	
-		  	"</div>"+
-		  "</div>"+
-	  "</div> <br>";
-	  
-	ShowNewIntent = ShowNewIntent.format([dadosIntencao.intent,dadosIntencao.intentCount,dadosIntencao.userCount,i.toString(),i.toString()]);
-	$(ShowNewIntent).appendTo('.contants');
-	 i++;
+		 if(dadosIntencao.intent == dadosIntencaoandtigo.intent) {
+			 var newmessage ="<input class='btn-mensagens' value='{0}'>";
+			 var teste = dadosIntencao.message;
+			 newmessage = newmessage.format([dadosIntencao.message]);
+			 var numeroDiv = i-1;
+			 var divInsert = ".mensagensintencao" + numeroDiv.toString();
+			 $(newmessage).appendTo(divInsert);
+		 } else {
+			 var ShowNewIntent = "<div class='container todos-elementos'> "+
+		  	  "<div class='container center'>"+
+		  	  "<span style='margin-top: 18px;'>{0}</span>"+
+		  	 " </div>"+
+			 " <div class='column container' >"+
+			  	"<div class='shell container coluna-inputs'>"+
+				   	"<select name='intencoes' style='height: 21.33px; width: 150px;'>"+
+					 "  <option value='intent'>Intenções</option>"+
+					  "  <option value='saudacao'>Saudação</option>"+
+					   " <option value='inconsistencia'>Inconsistência</option>"+
+					    "<option value='internet'>Internet</option>"+
+					   " <option value='afirmacao'>Afirmação</option>"+
+					 "   <option value='negacao'>Negação</option>"+
+					"</select>"+
+			  	"</div>"+
+			  	"<div class='container mensagens-botoes'>"+
+				 " 	<div class='container mostra-numeros'>"+
+				  "		<div>"+
+					  		"<label>Número de Mensagens: </label>"+
+					  		"<input class='box-numero' value='{1}'>	"+	 
+				  		"</div>"+
+						"<div>"+
+						  "	<label>Número de Usuários: </label>"+
+						   "	<input class='box-numero' value='{2}'>	"+
+					"	</div>	"+
+				  "	</div>"+
+				  "	<div class='mensagem container-mensagem-botoes container'>"+
+				  		"<label style='margin-bottom: 18px;'>Mensagens: </label>"+
+					  	"<div id='mensagens' class='mensagem mensagensintencao{6}'>"+
+					  	" <input class='btn-mensagens' value='{5}'>" +
+					  	"</div>"+
+					  "	<div class='container botoes'>"+
+					  "		<button onclick=\"ValidateNewIntent('{3}')\" class='space-right'><i class='fa fa-check green'></i> Validar Intenção</button>"+ 
+					  "		<button onclick=\"DeleteNewIntent('{4}')\"  ><i class='fa fa-trash-o red'></i> </button> "+
+					  	"</div>"+
+				  	"</div>		 "+ 	
+			  	"</div>"+
+			  "</div>"+
+		  "</div> <br>";
+		  
+		ShowNewIntent = ShowNewIntent.format([dadosIntencao.intent,dadosIntencao.intentCount,dadosIntencao.userCount,i.toString(),i.toString(), dadosIntencao.message,i.toString()]);
+		$(ShowNewIntent).appendTo('.contants');
+		 i++;
+			 
+		 }
+	 dadosIntencaoandtigo = dadosIntencao;
     }
 }
 
