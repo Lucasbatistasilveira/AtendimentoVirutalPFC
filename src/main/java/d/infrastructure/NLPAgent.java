@@ -80,12 +80,12 @@ public class NLPAgent implements INLPAgent {
 	public void CreateNewIntent(String message,String intentName) {
 		
 		try {
-			String url = "https://api.wit.ai/samples?v=20180522";
+			String url = "https://api.wit.ai/samples?v=20180608";
 			URL obj;
 			obj = new URL(url);
 			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 			
-			conn.setRequestProperty("Authorization", "Bearer O23ZT2QR6VSEQEDEN4VQOER3QZOXEBVH");
+			conn.setRequestProperty("Authorization", "Bearer O6QRIHBWP5S4WRVFSL3DCV4ZOWYDS4TJ");
 			conn.setRequestProperty("Content-Type", "application/json");
 		    conn.setDoOutput(true);
 		    conn.setRequestMethod("POST");
@@ -118,11 +118,11 @@ public class NLPAgent implements INLPAgent {
 		try {
 			
 			String msg = URLEncoder.encode(message,"UTF-8");
-			String url = "https://api.wit.ai/message?v=20180522&q=" + msg;
+			String url = "https://api.wit.ai/message?v=20180608&q=" + msg;
 			URL obj = new URL(url);
 			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 			
-			conn.setRequestProperty("Authorization", "Bearer O23ZT2QR6VSEQEDEN4VQOER3QZOXEBVH");
+			conn.setRequestProperty("Authorization", "Bearer O6QRIHBWP5S4WRVFSL3DCV4ZOWYDS4TJ");
 		    conn.setDoOutput(true);
 		    conn.setRequestMethod("POST");
 		 

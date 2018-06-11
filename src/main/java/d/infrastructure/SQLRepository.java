@@ -64,7 +64,7 @@ public class SQLRepository implements ISqlRepository {
 	
 	private final static String SQL_INSERT_NEW_INTENT = "INSERT INTO info_training (intent, id, date) VALUES (?, NULL, CURRENT_DATE)";
 	
-	private final static String SQL_INSERT_NEW_INTENT_LOG = "INSERT INTO log_training(id, intent_count, user_count, message, user_id, confidence, current_state, viewed) VALUES (?, ?, ?, ?, ?, ?, ?, NULL)";
+	private final static String SQL_INSERT_NEW_INTENT_LOG = "INSERT INTO log_training(id, intent_count, user_count, message, user_id, confidence, current_state, viewed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private final static String SQL_GET_INTENT_COUNT = "SELECT intent_count FROM log_training WHERE id = ? ORDER BY intent_count DESC LIMIT 1";
 	
@@ -339,6 +339,7 @@ public class SQLRepository implements ISqlRepository {
 			crunchifyPrepareStat.setString(5, User.getGuid());
 			crunchifyPrepareStat.setDouble(6, returnNLP.getConfidence());
 			crunchifyPrepareStat.setString(7, User.getState());
+			crunchifyPrepareStat.setInt(8,0);
 			
 			crunchifyPrepareStat.executeUpdate();
 		} catch (SQLException e) {

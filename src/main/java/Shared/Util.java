@@ -5,6 +5,9 @@ public class Util {
 	
 	public static class AppConstatns
     {
+		
+		public static double CONFIDENCE_THRESHOLD = 0.9;
+		
 		public static class Messages
 		{
 			public static final String WELCOME = "Seja bem vindo ao Atendimento Virtual UFMG. Aqui você pode tirar dúvidas relacionadas ao cadastro no minhaUFMG, ao correio eletrônico e à conexão com a Internet. Com o que posso ajudar?";
@@ -44,17 +47,17 @@ public class Util {
 			public static class StateInternet
 			{
 				public static final String UNKNOWN = "Desculpe, sistema operacional não conhecido. Poderia repetir, por favor? Alguns exemplos: Linux, IOS, MAC OS, Windows 10, 8, 7 , XP, Vista.";
-				public static final String ASK_ABOUT_SO = "Ok. Qual é o seu Sistema Operacional?";
+				public static final String ASK_ABOUT_SO = "%s Ok. Qual é o seu Sistema Operacional?";
 				public static class SO 
 				{
-					public static final String WINDOWS_10 = "%s Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";
-					public static final String WINDOWS_8 = "%s Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-8/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 8.";
-					public static final String WINDOWS_7 = "%s Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-7/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 7.";
-					public static final String WINDOWS_VISTA = "%s Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-vista/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows Vista.";
-					public static final String WINDOWS_XP = "%s Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-xp/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows XP.";
-					public static final String MAC_OS = "%s Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/macos/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no MAC OS.";
-					public static final String IOS = "%s Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/iphone-ipad/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no IOS.";
-					public static final String LINUX = "%s Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/linux/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Linux.";
+					public static final String WINDOWS_10 = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";
+					public static final String WINDOWS_8 = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-8/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 8.";
+					public static final String WINDOWS_7 = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-7/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 7.";
+					public static final String WINDOWS_VISTA = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-vista/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows Vista.";
+					public static final String WINDOWS_XP = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-xp/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows XP.";
+					public static final String MAC_OS = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/macos/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no MAC OS.";
+					public static final String IOS = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/iphone-ipad/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no IOS.";
+					public static final String LINUX = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/linux/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Linux.";
 					
 				}
 			}
@@ -68,6 +71,8 @@ public class Util {
 				public static final String COURSES_NOT_FOUND = "Não foram encontradas nenhuma turma associada à sua matrícula. Favor entrar em contato com o colegiado do seu curso.";
 				public static final String COURSES_UNDER_TWO_DAYS = "Alguma(s) turma(s) associada à sua matrícula foi adicionada ao banco de dados com menos de 48 horas. Por favor aguarde esse período para que o sistema se estabilize.";
 				public static final String SUCCESS = "Não consegui identificar nenhum problema com a sua matrícula. Deseja verificar o status do seu correio eletrônico?";
+				public static final String REGISTER_DENIAL = "Ok. Infelizmente sem o número de matrícula não posso continuar este atendimento. Gostaria de tirar mais alguma dúvida?";
+				public static final String STATE_CHANGE = "Vi que não deseja mais verificar os problemas relacionados à sua matrícula.";
 			}
 			
 			public static class StateUnifyLogin
@@ -77,6 +82,12 @@ public class Util {
 				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir, por favor?";
 			}
 			
+			public static class StateEmailVerification
+			{
+				public static final String USER_AFFIRMATION = "Muito bom poder resolver isso pra você. Um chamado está sendo aberto para que meu supervisor tome conta pessoalmente do seu caso. Abraço!";
+				public static final String USER_DENIAL = "Pelo que entendi você não deseja verificar o status do seu e-mail. Caso tenha mais alguma dúvida, sinta-se à vontade para me perguntar. Abraço!";
+				public static final String UNKNOWN = "Desculpe, não entendi o que disse. Gostaria de saber se deseja verificar o status do seu e-mail?";
+			}
 		}
 		
     }

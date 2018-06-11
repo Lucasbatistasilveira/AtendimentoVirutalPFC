@@ -27,14 +27,14 @@ public class TrainingService implements ITrainingService {
 		
 		switch(userResponse.getAction()) {
 		case "validate" :
-			System.out.println("Validando frases.");
+			System.out.println("Validando frases." + userResponse.getListTrainingInput());
 			for(TrainingInput i : userResponse.getListTrainingInput()) {
-				//System.out.println(i.getIntent() + " " + i.getMessage());
 				_nlpAgent.UpdatePrimaryIntent(i.getMessage(), i.getIntent());
 				_sqlAgent.CheckLogTrainingAsViewed(i.getMessage());
 			}
 			break;
 		case "delete" :
+			System.out.println("Deletando frases." + userResponse.getListTrainingInput());
 			for(TrainingInput i : userResponse.getListTrainingInput()) {
 				_sqlAgent.CheckLogTrainingAsViewed(i.getMessage());
 			}
