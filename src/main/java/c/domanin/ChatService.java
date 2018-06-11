@@ -180,8 +180,10 @@ public class ChatService implements IChatService {
 						boolean[] checkcourses = _sqlAgent.CheckCoursesAssociated(reg);
 						if(!checkcourses[0]) {
 							result.setMessage(StateMoodleInconsistency.COURSES_NOT_FOUND);
+							User.setContext("init");
 						}else if(!checkcourses[1]) {
 							result.setMessage(StateMoodleInconsistency.COURSES_UNDER_TWO_DAYS);
+							User.setContext("init");
 						}else {
 							result.setMessage(StateMoodleInconsistency.SUCCESS);
 							User.setContext("email_verification");
