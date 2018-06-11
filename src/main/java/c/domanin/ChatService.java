@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -31,7 +32,6 @@ public class ChatService implements IChatService {
 	public RetornoNLP sendMessage(String msg,String id) throws AddressException, MessagingException {
 
 		RetornoNLP result = new RetornoNLP();
-		
 		if(id.isEmpty() && msg.isEmpty()) {
 			System.out.println("Novo Usuario.");
 			return CreateIfNotExist();
@@ -40,7 +40,8 @@ public class ChatService implements IChatService {
 			// TODO : Lê infos do BD e atualiza User.
 			User.setContext("");
 			_sqlAgent.getUserContext(id);
-			System.out.println("input: " + msg + " " + id + " " + User.getContext());
+			System.out.println("input: " + RemoveAccent(msg) + " " + id + " " + User.getContext());
+			msg = RemoveAccent(msg);
 		}
 		
 		if(User.getContext() == null) {
@@ -414,6 +415,12 @@ public class ChatService implements IChatService {
 			greeting = "boa noite";
 		}
 		return greeting;
+	}
+	
+	private String RemoveAccent(String message) {
+		String strWithoutAccent = Normalizer.normalize(message,Normalizer.Form.NFD);
+		strWithoutAccent = strWithoutAccent.replaceAll("[^\\p{ASCII}]", "");
+		return strWithoutAccent; 
 	}
 
 }
