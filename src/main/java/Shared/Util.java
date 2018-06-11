@@ -51,6 +51,14 @@ public class Util {
 				public static class SO 
 				{
 					public static final String WINDOWS_10 = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";
+					public static final String WINDOWS_8 = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-8/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 8.";
+					public static final String WINDOWS_7 = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-7/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 7.";
+					public static final String WINDOWS_VISTA = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-vista/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows Vista.";
+					public static final String WINDOWS_XP = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-xp/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows XP.";
+					public static final String MAC_OS = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/macos/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no MAC OS.";
+					public static final String IOS = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/iphone-ipad/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no IOS.";
+					public static final String LINUX = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/linux/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Linux.";
+					
 				}
 			}
 			

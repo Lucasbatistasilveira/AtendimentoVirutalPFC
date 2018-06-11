@@ -246,6 +246,34 @@ public class ChatService implements IChatService {
 				result.setMessage(StateInternet.SO.WINDOWS_10);
 				User.setContext("init");
 				break;
+			case "windows 8":
+				result.setMessage(StateInternet.SO.WINDOWS_8);
+				User.setContext("init");
+				break;
+			case "windows 7":
+				result.setMessage(StateInternet.SO.WINDOWS_7);
+				User.setContext("init");
+				break;
+			case "windows vista":
+				result.setMessage(StateInternet.SO.WINDOWS_VISTA);
+				User.setContext("init");
+				break;
+			case "windows xp":
+				result.setMessage(StateInternet.SO.WINDOWS_XP);
+				User.setContext("init");
+				break;
+			case "mac os":
+				result.setMessage(StateInternet.SO.MAC_OS);
+				User.setContext("init");
+				break;
+			case "ios":
+				result.setMessage(StateInternet.SO.IOS);
+				User.setContext("init");
+				break;
+			case "linux":
+				result.setMessage(StateInternet.SO.LINUX);
+				User.setContext("init");
+				break;
 			default:
 				result.setMessage(StateInternet.UNKNOWN);
 				User.setContext("init");
