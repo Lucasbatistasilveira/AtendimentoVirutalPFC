@@ -48,6 +48,8 @@ public class Util {
 			{
 				public static final String UNKNOWN = "Desculpe, sistema operacional não conhecido. Poderia repetir, por favor? Alguns exemplos: Linux, IOS, MAC OS, Windows 10, 8, 7 , XP, Vista.";
 				public static final String ASK_ABOUT_SO = "%s Ok. Qual é o seu Sistema Operacional?";
+				public static final String UNKNOWN_SO = "Que pena! Assim não posso te ajudar, mas estarei aqui sempre que  precisar.";
+				public static final String GREATING = "Olá, %s! Qual é o seu Sistema Operacional?";
 				public static class SO 
 				{
 					public static final String WINDOWS_10 = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";

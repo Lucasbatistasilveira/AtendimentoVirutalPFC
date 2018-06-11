@@ -278,8 +278,24 @@ public class ChatService implements IChatService {
 				User.setContext("init");
 			}
 		}else if(entities.has("intent")){
-			result.setMessage(StateInternet.ASK_ABOUT_SO);
-			User.setContext("internet");
+			
+				
+			switch(result.getIntent()) {
+			case "negacao" :
+				result.setMessage(StateInternet.UNKNOWN_SO);
+				User.setContext("init");
+				break;
+			case "saudacao":
+				result.setMessage(String.format(StateInternet.GREATING, GetGreeting()));
+				User.setContext("internet");
+				break;
+			default:
+				result.setMessage(StateInternet.ASK_ABOUT_SO);
+				User.setContext("internet");	
+			}
+			
+			
+
 		}else {
 			result.setMessage(StateInternet.UNKNOWN);
 			User.setContext("internet");

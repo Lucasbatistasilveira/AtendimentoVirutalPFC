@@ -36,6 +36,7 @@
                 $("<div class='chat bot'><div class='user-photo'><img src='img/bot.png'></div><p class='chat-message arrow_box_bot'>" + msgServer + "</p></div>").appendTo('.chatlogs');
                 var element = document.getElementById("chatlogs");
                 element.scrollTop = element.scrollHeight;
+                document.getElementById("texto").focus();
             }
         }); 
     }
@@ -62,6 +63,8 @@
                 var element = document.getElementById("chatlogs");
                 //inserindo o loading
                 $("<div class='chat bot' id='loading'> <div class='user-photo'><img src='img/bot.png'></div> <div class='loading-photo'><img src='img/loading.gif'></div></div>").appendTo('.chatlogs');
+                document.getElementById("texto").disabled = true;
+                
                 var idd = localStorage.getItem("userid");
                 element.scrollTop = element.scrollHeight;
                 setTimeout(function(){
@@ -74,7 +77,9 @@
                         data: JSON.stringify( {"message" : texto, "id" : localStorage.getItem("userid")}),
                         success: function(response){
                             $("#loading").remove();
-                            msgServer = response['message']
+                            document.getElementById("texto").disabled = false;
+                            document.getElementById("texto").focus();
+                            msgServer = response['message'];
                             $("<div class='chat bot'><div class='user-photo'><img src='img/bot.png'></div><p class='chat-message arrow_box_bot'>" + msgServer + "</p></div>").appendTo('.chatlogs');
                             var element = document.getElementById("chatlogs");
                             element.scrollTop = element.scrollHeight;
