@@ -34,6 +34,7 @@ public class TrainingService implements ITrainingService {
 			}
 			break;
 		case "delete" :
+			System.out.println("Deletando frases." + userResponse.getListTrainingInput());
 			for(TrainingInput i : userResponse.getListTrainingInput()) {
 				_sqlAgent.CheckLogTrainingAsViewed(i.getMessage());
 			}

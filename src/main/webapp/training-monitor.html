@@ -148,26 +148,16 @@ body {
 </head>
 <body onload="FillContent()">
 
-<<<<<<< HEAD
-<div class="container botoes-selecao" id="btnContainer">
-<button id="btnTreinamento" class="btn active" onclick="TrainingIntens()"><i class="fa fa-th-large"></i> Intenções para Treinamento</button>
-<button id="btnNova"class="btn" onclick="NewIntents()"><i class="fa fa-bars"></i> Intenções Novas</button> 
-=======
 <div class="menu">
 	<div class="container titulo">
 		<h2 style="margin:  auto;"> Monitor de Treinamento</h2>
 	</div>
 	
 	<div class="container botoes-selecao" id="btnContainer">
-	<button id="btnTreinamento" class="btn active" onclick="TrainingIntens()"><i class="fa fa-th-large"></i> Intenções para Treinamento</button>
-	<button id="btnNova"class="btn" onclick="NewIntents()"><i class="fa fa-bars"></i> Intenções Novas</button> 
+	<button id="btnTreinamento" class="btn active" onclick="TrainingIntens()"><i class="fa fa-th-large"></i> IntenÃ§Ãµes para Treinamento</button>
+	<button id="btnNova"class="btn" onclick="NewIntents()"><i class="fa fa-bars"></i> IntenÃ§Ãµes Novas</button> 
 	</div>
-<<<<<<< HEAD
-	<br >
->>>>>>> 89c42f3d3a1a5c0415fcd98e891b3af7cc3c7181
-=======
 	<br>
->>>>>>> 26076b4f7623256f5518455f32ff042853f9a86e
 </div>
 
 <div class="container margin-top shell" >
@@ -182,12 +172,12 @@ body {
 			  	<div class="shell container coluna-inputs">
 					
 				   	<select name="intencoes" style="height: 21.33px; width: 150px">
-					    <option value="intent">Intenções</option>
-					    <option value="saudacao">Saudação</option>
-					    <option value="inconsistencia">Inconsistência</option>
+					    <option value="intent">Intenï¿½ï¿½es</option>
+					    <option value="saudacao">Saudaï¿½ï¿½o</option>
+					    <option value="inconsistencia">Inconsistï¿½ncia</option>
 					    <option value="internet">Internet</option>
-					    <option value="afirmacao">Afirmação</option>
-					    <option value="negacao">Negação</option>
+					    <option value="afirmacao">Afirmaï¿½ï¿½o</option>
+					    <option value="negacao">Negaï¿½ï¿½o</option>
 					</select>
 	   	
 			  	</div>
@@ -198,7 +188,7 @@ body {
 					  		<input class="box-numero" value='{1}'>		 
 				  		</div>
 						<div>
-						  	<label>Nï¿½mero de Usuários: </label>
+						  	<label>Nï¿½mero de Usuï¿½rios: </label>
 						   	<input class="box-numero" value='{2}'>	
 						</div>	
 				  	</div>
@@ -211,7 +201,7 @@ body {
 						   	<input class="btn-mensagens">	
 					  	</div>
 					  	<div class="container botoes">
-					  		<button onclick="ValidateNewIntent({3})"class="space-right"><i class="fa fa-check green"></i> Validar Intenção</button> 
+					  		<button onclick="ValidateNewIntent({3})"class="space-right"><i class="fa fa-check green"></i> Validar Intenï¿½ï¿½o</button> 
 					  		<button onclick="DeleteNewIntent({3})" ><i class="fa fa-trash-o red"></i> </button> 
 					  	</div>
 				  	</div>		  	
@@ -270,36 +260,6 @@ function FillContent() {
         		}else {
 
         			trainingIntents.push(dadosIntencao);
-<<<<<<< HEAD
-
-           		    debugger;
-        			var showContent = "<div class='column container' id='div{6}' style='background-color:#aaa;'> "+
-        	    	"<div class='shell container coluna-inputs'> "+
-        	    		   "	<label>Intenção: </label> " +
-        	    		   	"<input value='{0}'>	"+
-        	    		    "<label>Confiança: </label>"+
-        	    		   	"<input value='{1}'>"+
-        	    		   	
-        	    		   	"<label>Estado: </label>"+
-        	    		   	"<input value='{2}'>		   	"+
-        	    	  	"</div>"+
-        	    	  	"<div class='mensagem container-mensagem-botoes container'>"+
-        	    		  	"<div class='mensagem '>"+
-        	    		  		"<label>Mensagem: </label>"+
-        	    			   	"<input value='{3}' class='btn-mensagem'>	"+
-        	    		  	"</div>"+
-        	    		  	"<div class='container botoes'>"+
-        	    		  		"<button  class='space-right' onclick=\"ValidateIntent('{4}')\" ><i id='buttonval{6}' class='fa fa-check green'></i> Validar Intenção</button> "+
-        	    		  		"<button  onclick=\"DeleteIntent('{5}')\" ><i id='buttondel{6}'class='fa fa-trash-o red'></i> </button> "+
-        	    		  	"</div>"+
-        	    	"</div>"+
-        	    	"</div>";
-
-        	    	showContent = showContent.format([dadosIntencao.intent,dadosIntencao.confident,dadosIntencao.state,dadosIntencao.message,i.toString(),i.toString(),i.toString()]);
-        	    	$(showContent).appendTo('.contants');
- 
-=======
->>>>>>> 89c42f3d3a1a5c0415fcd98e891b3af7cc3c7181
         		}
         		i++;
         	}
@@ -327,54 +287,64 @@ function NewIntents() {
 	 var i=0;
 	$("#contents").empty();
 	 debugger;
+	 var dadosIntencaoandtigo = [];
 	 for (intencao in newIntents) {
+		 debugger;
 		 var dadosIntencao = newIntents[intencao];
-    	var ShowNewIntent = "<div class='container todos-elementos'> "+
-	  	  "<div class='container center'>"+
-	  	  "<span style='margin-top: 18px;'>{0}</span>"+
-	  	 " </div>"+
-		 " <div class='column container' >"+
-		  	"<div class='shell container coluna-inputs'>"+
-			   	"<select name='intencoes' style='height: 21.33px; width: 150px;'>"+
-				 "  <option value='intent'>Intenções</option>"+
-				  "  <option value='saudacao'>Saudação</option>"+
-				   " <option value='inconsistencia'>Inconsistência</option>"+
-				    "<option value='internet'>Internet</option>"+
-				   " <option value='afirmacao'>Afirmação</option>"+
-				 "   <option value='negacao'>Negação</option>"+
-				"</select>"+
-		  	"</div>"+
-		  	"<div class='container mensagens-botoes'>"+
-			 " 	<div class='container mostra-numeros'>"+
-			  "		<div>"+
-				  		"<label>Número de Mensagens: </label>"+
-				  		"<input class='box-numero' value='{1}'>	"+	 
-			  		"</div>"+
-					"<div>"+
-					  "	<label>Número de Usuários: </label>"+
-					   "	<input class='box-numero' value='{2}'>	"+
-				"	</div>	"+
-			  "	</div>"+
-			  "	<div class='mensagem container-mensagem-botoes container'>"+
-			  		"<label style='margin-bottom: 18px;'>Mensagens: </label>"+
-				  	"<div id='mensagens' class='mensagem'>"+
-					"	<input class='btn-mensagens'>	"+
-					"   	<input class='btn-mensagens'>	"+
-					 "  	<input class='btn-mensagens'>	"+
-					 "  	<input class='btn-mensagens'>	"+
-				  	"</div>"+
-				  "	<div class='container botoes'>"+
-				  "		<button onclick=\"ValidateNewIntent('{3}')\" class='space-right'><i class='fa fa-check green'></i> Validar Intenção</button>"+ 
-				  "		<button onclick=\"DeleteNewIntent('{4}')\"  ><i class='fa fa-trash-o red'></i> </button> "+
-				  	"</div>"+
-			  	"</div>		 "+ 	
-		  	"</div>"+
-		  "</div>"+
-	  "</div> <br>";
-	  
-	ShowNewIntent = ShowNewIntent.format([dadosIntencao.intent,dadosIntencao.intentCount,dadosIntencao.userCount,i.toString(),i.toString()]);
-	$(ShowNewIntent).appendTo('.contants');
-	 i++;
+		 if(dadosIntencao.intent == dadosIntencaoandtigo.intent) {
+			 var newmessage ="<input class='btn-mensagens' value='{0}'>";
+			 var teste = dadosIntencao.message;
+			 newmessage = newmessage.format([dadosIntencao.message]);
+			 var numeroDiv = i-1;
+			 var divInsert = ".mensagensintencao" + numeroDiv.toString();
+			 $(newmessage).appendTo(divInsert);
+		 } else {
+			 var ShowNewIntent = "<div class='container todos-elementos'> "+
+		  	  "<div class='container center'>"+
+		  	  "<span style='margin-top: 18px;'>{0}</span>"+
+		  	 " </div>"+
+			 " <div class='column container' >"+
+			  	"<div class='shell container coluna-inputs'>"+
+				   	"<select name='intencoes' style='height: 21.33px; width: 150px;'>"+
+					 "  <option value='intent'>IntenÃ§Ãµes</option>"+
+					  "  <option value='saudacao'>SaudaÃ§Ã£o</option>"+
+					   " <option value='inconsistencia'>InconsistÃªncia</option>"+
+					    "<option value='internet'>Internet</option>"+
+					   " <option value='afirmacao'>AfirmaÃ§Ã£o</option>"+
+					 "   <option value='negacao'>NegaÃ§Ã£o</option>"+
+					"</select>"+
+			  	"</div>"+
+			  	"<div class='container mensagens-botoes'>"+
+				 " 	<div class='container mostra-numeros'>"+
+				  "		<div>"+
+					  		"<label>Nï¿½mero de Mensagens: </label>"+
+					  		"<input class='box-numero' value='{1}'>	"+	 
+				  		"</div>"+
+						"<div>"+
+						  "	<label>NÃºmero de UsuÃ¡rios: </label>"+
+						   "	<input class='box-numero' value='{2}'>	"+
+					"	</div>	"+
+				  "	</div>"+
+				  "	<div class='mensagem container-mensagem-botoes container'>"+
+				  		"<label style='margin-bottom: 18px;'>Mensagens: </label>"+
+					  	"<div id='mensagens' class='mensagem mensagensintencao{6}'>"+
+					  	" <input class='btn-mensagens' value='{5}'>" +
+					  	"</div>"+
+					  "	<div class='container botoes'>"+
+					  "		<button onclick=\"ValidateNewIntent('{3}')\" class='space-right'><i class='fa fa-check green'></i> Validar IntenÃ§Ã£o</button>"+ 
+					  "		<button onclick=\"DeleteNewIntent('{4}')\"  ><i class='fa fa-trash-o red'></i> </button> "+
+					  	"</div>"+
+				  	"</div>		 "+ 	
+			  	"</div>"+
+			  "</div>"+
+		  "</div> <br>";
+		  
+		ShowNewIntent = ShowNewIntent.format([dadosIntencao.intent,dadosIntencao.intentCount,dadosIntencao.userCount,i.toString(),i.toString(), dadosIntencao.message,i.toString()]);
+		$(ShowNewIntent).appendTo('.contants');
+		 i++;
+			 
+		 }
+	 dadosIntencaoandtigo = dadosIntencao;
     }
 }
 
@@ -388,9 +358,9 @@ function TrainingIntens() {
 		 var dadosIntencao = trainingIntents[intencao];
 		 var showContent = "<div class='column container' id='div{6}' style='background-color:#aaa;'> "+
 	    	"<div class='shell container coluna-inputs'> "+
-	    		   "	<label>Intenção: </label> " +
+	    		   "	<label>IntenÃ§Ã£o: </label> " +
 	    		   	"<input value='{0}'>	"+
-	    		    "<label>Confiança: </label>"+
+	    		    "<label>ConfianÃ§a: </label>"+
 	    		   	"<input value='{1}'>"+
 	    		   	
 	    		   	"<label>Estado: </label>"+
@@ -402,7 +372,7 @@ function TrainingIntens() {
 	    			   	"<input value='{3}' class='btn-mensagem'>	"+
 	    		  	"</div>"+
 	    		  	"<div class='container botoes'>"+
-	    		  		"<button  class='space-right' onclick=\"ValidateIntent('{4}')\" ><i id='buttonval{6}' class='fa fa-check green'></i> Validar Intenção</button> "+
+	    		  		"<button  class='space-right' onclick=\"ValidateIntent('{4}')\" ><i id='buttonval{6}' class='fa fa-check green'></i> Validar IntenÃ§Ã£o</button> "+
 	    		  		"<button  onclick=\"DeleteIntent('{5}')\" ><i id='buttondel{6}'class='fa fa-trash-o red'></i> </button> "+
 	    		  	"</div>"+
 	    	"</div>"+
@@ -458,7 +428,7 @@ function DeleteIntent(numero) {
         dataType: 'json',
         type: 'post',
         contentType: 'application/json',
-        data: JSON.stringify( {"intent" : intent, "message" : message, "action": "delete"}),
+        data: JSON.stringify( {"listTrainingInput" : [{"intent" : intent, "message" : message}], "action": "delete"}),
         success: function(response){
             //tratar resposta do servidor
             //bloquear a div

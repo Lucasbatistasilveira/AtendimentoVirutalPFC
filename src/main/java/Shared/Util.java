@@ -35,22 +35,22 @@ public class Util {
 		{
 			public static class StateSetup
 			{
-				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir?";
+				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir???";
 			}
 			
 			public static class StateInit 
 			{
 				public static final String GREATING = "Olá, %s! Em que posso ajudar?";
-				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Você pode repetir?";
+				public static final String UNKNOWN = "Desculpe, não entendi o que você falou. Aqui você pode tirar dúvidas relacionadas ao cadastro no minhaUFMG, ao correio eletrônico e à conexão com a Internet. Com o que posso ajudar?";
 			}
 			
 			public static class StateInternet
 			{
-				public static final String UNKNOWN = "Desculpe, sistema operacional não conhecido, poderia repetir, por favor?";
+				public static final String UNKNOWN = "Desculpe, sistema operacional não conhecido. Poderia repetir, por favor? Alguns exemplos: Linux, IOS, MAC OS, Windows 10, 8, 7 , XP, Vista.";
 				public static final String ASK_ABOUT_SO = "Ok. Qual é o seu Sistema Operacional?";
 				public static class SO 
 				{
-					public static final String WINDOWS_10 = "Por favor, <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";
+					public static final String WINDOWS_10 = "Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";
 				}
 			}
 			
