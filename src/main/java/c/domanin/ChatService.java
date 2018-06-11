@@ -52,7 +52,7 @@ public class ChatService implements IChatService {
 			result = State_Init(msg);
 			break;
 		case "internet":
-			result = State_Internet(msg, new JSONObject());
+			result = State_Internet(msg, new JSONObject(),"");
 			break;
 		case "wait_registration":
 			result = State_InconsistencyMoodle(msg, new JSONObject());
@@ -109,7 +109,7 @@ public class ChatService implements IChatService {
 					User.setContext("init");
 					break;
 				case "internet":
-					result = State_Internet("",jsonWit);
+					result = State_Internet("",jsonWit,"");
 					break;
 				case "inconsistencia":
 					result = State_InconsistencyMoodle("",jsonWit);
@@ -144,7 +144,23 @@ public class ChatService implements IChatService {
 			String reg = Get_Registration(msg);
 			User.setMessage(msg);
 			if(reg == null) {
-				result.setMessage(StateMoodleInconsistency.WRONG_REGISTER_FORMAT);
+				jsonWit = _nlpAgent.enviaWit(msg);
+				result = JSONtoRetornoNLP(jsonWit);
+				
+				switch(result.getIntent()) {
+				case "negacao" :
+					result.setMessage(StateMoodleInconsistency.REGISTER_DENIAL);
+					User.setState("init");
+					break;
+				case "internet":
+					System.out.println("Envia ao estado de internet");
+					result = State_Internet("", jsonWit,StateMoodleInconsistency.STATE_CHANGE);
+					break;
+				default:
+					result.setMessage(StateMoodleInconsistency.WRONG_REGISTER_FORMAT);	
+				}
+				
+				
 			}else {
 				User.setRegistration(reg);
 				List<Register> register = new ArrayList<Register>();
@@ -214,7 +230,7 @@ public class ChatService implements IChatService {
 		return null;
 	}
 	
-	private RetornoNLP State_Internet(String message,JSONObject jsonWit) {
+	private RetornoNLP State_Internet(String message,JSONObject jsonWit,String prevStateMessage) {
 		
 		if(jsonWit.length() == 0) {
 			jsonWit = _nlpAgent.enviaWit(message);
@@ -240,6 +256,8 @@ public class ChatService implements IChatService {
 			result.setMessage(StateInternet.UNKNOWN);
 			User.setContext("internet");
 		}
+		result.setMessage(String.format(result.getMessage(), prevStateMessage));
+		
 		return result;
 	}
 	

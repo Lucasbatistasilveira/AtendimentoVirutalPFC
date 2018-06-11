@@ -47,10 +47,10 @@ public class Util {
 			public static class StateInternet
 			{
 				public static final String UNKNOWN = "Desculpe, sistema operacional não conhecido. Poderia repetir, por favor? Alguns exemplos: Linux, IOS, MAC OS, Windows 10, 8, 7 , XP, Vista.";
-				public static final String ASK_ABOUT_SO = "Ok. Qual é o seu Sistema Operacional?";
+				public static final String ASK_ABOUT_SO = "%s Ok. Qual é o seu Sistema Operacional?";
 				public static class SO 
 				{
-					public static final String WINDOWS_10 = "Ok! <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";
+					public static final String WINDOWS_10 = "%s Ok. <a href=\"http://www.redesemfio.ufmg.br/configuracao/windows-10/\" target=\"_blank\">Clique aqui</a> para visualizar as instruções para conseguir conectar à Internet no Windows 10.";
 				}
 			}
 			
@@ -63,6 +63,8 @@ public class Util {
 				public static final String COURSES_NOT_FOUND = "Não foram encontradas nenhuma turma associada à sua matrícula. Favor entrar em contato com o colegiado do seu curso.";
 				public static final String COURSES_UNDER_TWO_DAYS = "Alguma(s) turma(s) associada à sua matrícula foi adicionada ao banco de dados com menos de 48 horas. Por favor aguarde esse período para que o sistema se estabilize.";
 				public static final String SUCCESS = "Não consegui identificar nenhum problema com a sua matrícula. Deseja verificar o status do seu correio eletrônico?";
+				public static final String REGISTER_DENIAL = "Ok. Infelizmente sem o número de matrícula não posso continuar este atendimento. Gostaria de tirar mais alguma dúvida?";
+				public static final String STATE_CHANGE = "Vi que não deseja mais verificar os problemas relacionados à sua matrícula.";
 			}
 			
 			public static class StateUnifyLogin
